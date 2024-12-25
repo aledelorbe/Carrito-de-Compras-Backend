@@ -42,7 +42,7 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of this object with the product record.
     @Override
     @Transactional
-    public DetailedPurchaseHistory addDetailProduct(UtilDetail utilDetail) {
+    public DetailedPurchaseHistory addDetailPurchase(UtilDetail utilDetail) {
         // Search for a product.
         DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
         Optional<Product> optionalProduct = productRepository.findById(utilDetail.getIdProduct());
@@ -64,7 +64,7 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of these objects with each product record.
     @Override
     @Transactional
-    public List<DetailedPurchaseHistory> addDetailProducts(List<UtilDetail> utilDetails) {
+    public List<DetailedPurchaseHistory> addDetailsPurchase(List<UtilDetail> utilDetails) {
 
         List<DetailedPurchaseHistory> details = new ArrayList<>();
 

@@ -16,8 +16,8 @@ public interface DetailedPurchaseHistoryService {
 
     public List<DetailedPurchaseHistory> findAllByPurchaseHistoryId(Long id);
 
-    public DetailedPurchaseHistory addDetailProduct(UtilDetail utilDetail);
+    public DetailedPurchaseHistory addDetailPurchase(UtilDetail utilDetail);
 
-    public List<DetailedPurchaseHistory> addDetailProducts(List<UtilDetail> utilDetails);
+    public List<DetailedPurchaseHistory> addDetailsPurchase(List<UtilDetail> utilDetails);
 
 }

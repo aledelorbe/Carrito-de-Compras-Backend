@@ -13,52 +13,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
-import com.alejandro.carritodecompras.services.DetailedPurchaseHistoryService;
+import com.alejandro.carritodecompras.entities.PurchaseHistory;
+import com.alejandro.carritodecompras.services.PurchaseHistoryService;
 
 import jakarta.validation.Valid;
 import utils.UtilDetail;
 
 @RestController // To create a api rest.
-@RequestMapping("/api/details") // To create a base path.
-public class DetailedPurchaseHistoryController {
+@RequestMapping("/api/purchases") // To create a base path.
+public class PurchaseHistoryController {
 
     // To Inject the service dependency
     @Autowired
-    private DetailedPurchaseHistoryService service;
+    private PurchaseHistoryService service;
 
     // -----------------------------
-    // Methods for DetailedPurchaseHistory entity
+    // Methods for PurchaseHistory entity
     // -----------------------------
-
-    // To create an endpoint that allows invocating the method addDetailProduct.
-    // The annotation called 'RequestBody' allows receiving data of a product
-    // This endpoint is only used to test the 'addDetailProduct' method ****
-    @PostMapping()
-    public ResponseEntity<?> saveDetailPurchase(@Valid @RequestBody UtilDetail utilDetail, BindingResult result) {
-        // To handle the obligations of object attributes
-        if (result.hasFieldErrors()) {
-            return validation(result);
-        }
-
-        // When a new detail is created to respond return the same detail
-        DetailedPurchaseHistory newDetailedPurchaseHistory = service.addDetailPurchase(utilDetail);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newDetailedPurchaseHistory);
-    }
 
     // To create an endpoint that allows invocating the method saveDetailedsPurchaseHistory.
     // The annotation called 'RequestBody' allows receiving data of many products
     // This endpoint is only used to test the 'addDetailProducts' method ****
     @PostMapping("/many")
-    public ResponseEntity<?> saveDetailsPurchase(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
+    public ResponseEntity<?> savePurchase(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return validation(result);
         }
 
         // When a new detail is created to respond return the same detail
-        List<DetailedPurchaseHistory> newDetailedsPurchaseHistory = service.addDetailsPurchase(utilDetails);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newDetailedsPurchaseHistory);
+        PurchaseHistory newPurchaseHistory = service.addPurchase(utilDetails);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newPurchaseHistory);
     }
 
     // -----------------------------
