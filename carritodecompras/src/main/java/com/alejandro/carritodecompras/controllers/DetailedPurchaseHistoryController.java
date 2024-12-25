@@ -33,6 +33,7 @@ public class DetailedPurchaseHistoryController {
 
     // To create an endpoint that allows invocating the method addDetailProduct.
     // The annotation called 'RequestBody' allows receiving data of a product
+    // This endpoint is only used to test the 'addDetailProduct' method ****
     @PostMapping()
     public ResponseEntity<?> saveDetailedPurchaseHistory(@Valid @RequestBody UtilDetail utilDetail, BindingResult result) {
         // To handle the obligations of object attributes
@@ -47,6 +48,7 @@ public class DetailedPurchaseHistoryController {
 
     // To create an endpoint that allows invocating the method saveDetailedsPurchaseHistory.
     // The annotation called 'RequestBody' allows receiving data of many products
+    // This endpoint is only used to test the 'addDetailProducts' method ****
     @PostMapping("/many")
     public ResponseEntity<?> saveDetailedsPurchaseHistory(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes

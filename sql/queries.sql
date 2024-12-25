@@ -18,5 +18,8 @@ INSERT INTO product (name, description, brand, category, price, image, status) V
 */
 
 select *
-from product
+from product;
+
+select *
+from detailed_purchase_history;
 

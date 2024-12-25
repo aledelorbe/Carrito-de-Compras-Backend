@@ -43,10 +43,14 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     @Override
     @Transactional
     public DetailedPurchaseHistory addDetailProduct(UtilDetail utilDetail) {
+        // Search for a product.
         DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
         Optional<Product> optionalProduct = productRepository.findById(utilDetail.getIdProduct());
 
+        // If the product exists then
         optionalProduct.ifPresent(productDb -> {
+            // Fill the object of 'many' class with information and
+            // create the relationship between 'many' object and the 'one' object
             detail.setQuantity(utilDetail.getQuantity());
             detail.setTotal(productDb.getPrice() * utilDetail.getQuantity());
 
@@ -64,15 +68,19 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
 
         List<DetailedPurchaseHistory> details = new ArrayList<>();
 
-        for(UtilDetail util: utilDetails) {
+        for (UtilDetail util : utilDetails) {
 
+            // Search for a product.
             DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
             Optional<Product> optionalProduct = productRepository.findById(util.getIdProduct());
-    
+
+            // If the product exists then
             optionalProduct.ifPresent(productDb -> {
+                // Fill the object of 'many' class with information and
+                // create the relationship between 'many' object and the 'one' object
                 detail.setQuantity(util.getQuantity());
                 detail.setTotal(productDb.getPrice() * util.getQuantity());
-    
+
                 detail.setProduct(productDb);
                 details.add(detail);
             });

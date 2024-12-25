@@ -1,9 +1,13 @@
 package utils;
 
+import jakarta.validation.constraints.NotNull;
+
 public class UtilDetail {
 
+    @NotNull // To obligate to this attribute not to empty
     private Long idProduct;
 
+    @NotNull // To obligate to this attribute not to empty
     private Long quantity;
 
     public Long getIdProduct() {
