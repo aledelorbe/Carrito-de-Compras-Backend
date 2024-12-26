@@ -26,3 +26,6 @@ from detailed_purchase_history;
 select *
 from purchase_history;
 
+select *
+from user;
+
