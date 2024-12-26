@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.alejandro.carritodecompras.entities.User;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 
 public interface UserService {
 
@@ -22,4 +23,10 @@ public interface UserService {
     public Optional<User> update(Long id, User user);
 
     public Optional<User> deleteById(Long id);
+
+    // -----------------------------
+    // Methods for purchase entity
+    // -----------------------------
+
+    public User addPurchaseToUser(User userDb, List<UtilDetail> utilDetails);
 }

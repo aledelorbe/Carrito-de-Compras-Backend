@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alejandro.carritodecompras.entities.User;
 import com.alejandro.carritodecompras.services.UserService;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 import com.alejandro.carritodecompras.utils.UtilValidation;
 
 import jakarta.validation.Valid;
@@ -98,6 +99,45 @@ public class UserController {
             return ResponseEntity.ok(optionalUser.orElseThrow());
         }
         // Else return code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // -----------------------------
+    // Methods for purchase entity
+    // -----------------------------
+
+    // To create an endpoint that allows invocating the 'addPurchaseToUser' method.
+    // The annotation called 'RequestBody' allows receiving data of a user
+    @PostMapping("/{userId}/purchase")
+    public ResponseEntity<?> addPurchaseToUser(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result, @PathVariable Long userId) {
+        // To handle the obligations of object attributes
+        if (result.hasFieldErrors()) {
+            return utilValidation.validation(result);
+        }
+
+        // Search for a specific user if it exists then save the pet
+        Optional<User> optionalUser = service.findById(userId);
+
+        if (optionalUser.isPresent()) {
+            User newUser = service.addPurchaseToUser(optionalUser.get(), utilDetails);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows invocating the 'getPurchasesOfUser' method.
+    // The annotation called 'RequestBody' allows receiving data of a user
+    @GetMapping("/{userId}/purchase")
+    public ResponseEntity<?> getPurchasesOfUser(@PathVariable Long userId) {
+
+        // Search for a specific user if it exists then save the pet
+        Optional<User> optionalUser = service.findById(userId);
+
+        if (optionalUser.isPresent()) {
+            return ResponseEntity.ok(optionalUser.orElseThrow());
+        }
+        // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 }

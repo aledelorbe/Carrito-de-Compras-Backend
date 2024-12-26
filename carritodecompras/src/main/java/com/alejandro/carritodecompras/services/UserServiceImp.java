@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.entities.User;
 import com.alejandro.carritodecompras.repositories.UserRepository;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -16,6 +18,10 @@ public class UserServiceImp implements UserService {
     // To inject the repository dependency.
     @Autowired
     private UserRepository repository;
+
+    // To inject the repository dependency.
+    @Autowired
+    private PurchaseHistoryService purchaseHistoryService;
 
     // -----------------------------
     // Methods for user entity
@@ -77,5 +83,20 @@ public class UserServiceImp implements UserService {
         });
 
         return optionalUser;
+    }
+
+    // -----------------------------
+    // Methods for purchase entity
+    // -----------------------------
+
+    // To add new purchase to user
+    @Override
+    @Transactional
+    public User addPurchaseToUser(User userDb, List<UtilDetail> utilDetails) {
+        PurchaseHistory purchaseDb = purchaseHistoryService.addPurchase(utilDetails);
+
+        userDb.getPurchases().add(purchaseDb);
+
+        return repository.save(userDb);
     }
 }
