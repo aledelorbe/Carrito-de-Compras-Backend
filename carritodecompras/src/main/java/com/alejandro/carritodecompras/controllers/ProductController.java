@@ -2,9 +2,7 @@ package com.alejandro.carritodecompras.controllers;
 
 import jakarta.validation.Valid;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alejandro.carritodecompras.entities.Product;
 
 import com.alejandro.carritodecompras.services.ProductService;
+import com.alejandro.carritodecompras.utils.UtilValidation;
 
 @RestController // To create a api rest.
 @RequestMapping("/api/products") // To create a base path.
@@ -31,6 +30,9 @@ public class ProductController {
     // To Inject the service dependency
     @Autowired
     private ProductService service;
+
+    @Autowired
+    private UtilValidation utilValidation;
 
     // -----------------------------
     // Methods for product entity
@@ -60,7 +62,7 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
-            return validation(result);
+            return utilValidation.validation(result);
         }
 
         // When a new product is created to respond return the same product
@@ -76,7 +78,7 @@ public class ProductController {
             @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
-            return validation(result);
+            return utilValidation.validation(result);
         }
 
         // Find specific product and if it's present then return specific product
@@ -89,7 +91,8 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows setting a status value for a specific product based its id.
+    // To create an endpoint that allows setting a status value for a specific
+    // product based its id.
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateStatusProduct(@PathVariable Long id) {
         // Find specific product and if it's present then return specific product
@@ -99,21 +102,5 @@ public class ProductController {
         }
         // Else return code response 404
         return ResponseEntity.notFound().build();
-    }
-
-    // -----------------------------
-    // Method to validate
-    // -----------------------------
-
-    // To send a JSON object with messages about the obligations of each object
-    // attribute
-    private ResponseEntity<?> validation(BindingResult result) {
-        Map<String, String> errors = new HashMap<>();
-
-        result.getFieldErrors().forEach(e -> {
-            errors.put(e.getField(), "El campo " + e.getField() + " " + e.getDefaultMessage());
-        });
-
-        return ResponseEntity.badRequest().body(errors);
     }
 }

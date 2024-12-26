@@ -12,8 +12,7 @@ import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
 import com.alejandro.carritodecompras.entities.Product;
 import com.alejandro.carritodecompras.repositories.DetailedPurchaseHistoryRepository;
 import com.alejandro.carritodecompras.repositories.ProductRepository;
-
-import utils.UtilDetail;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 
 @Service
 public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistoryService {

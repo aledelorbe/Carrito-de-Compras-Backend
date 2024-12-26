@@ -1,4 +1,4 @@
-package utils;
+package com.alejandro.carritodecompras.utils;
 
 import jakarta.validation.constraints.NotNull;
 

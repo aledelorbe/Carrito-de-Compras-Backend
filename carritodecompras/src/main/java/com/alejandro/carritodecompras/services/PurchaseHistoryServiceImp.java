@@ -11,8 +11,7 @@ import com.alejandro.carritodecompras.entities.Product;
 import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.repositories.ProductRepository;
 import com.alejandro.carritodecompras.repositories.PurchaseHistoryRepository;
-
-import utils.UtilDetail;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 
 @Service
 public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
@@ -29,8 +28,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
     @Autowired
     private DetailedPurchaseHistoryService detailedRepository;
 
-    // To save many new details in the db
-    // and the relationship of these objects with each product record.
+    // To save a purchase and the details of this purchase in the db
     @Override
     @Transactional
     public PurchaseHistory addPurchase(List<UtilDetail> utilDetails) {
@@ -57,33 +55,8 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
         }
         newPurchaseHistory.setTotal(total);
         newPurchaseHistory.setDetails(detailedRepository.addDetailsPurchase(utilDetails));
+        // the date is set in the 'PurchaseHistory' entity 
 
         return repository.save(newPurchaseHistory);
-
-        // PurchaseHistory purchaseHistoryDb = repository.save(newPurchaseHistory);
-
-        // List<DetailedPurchaseHistory> details = new ArrayList<>();
-
-        // for (UtilDetail util : utilDetails) {
-
-        // // Search for a product.
-        // DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
-        // Optional<Product> optionalProduct =
-        // productRepository.findById(util.getIdProduct());
-
-        // // If the product exists then
-        // optionalProduct.ifPresent(productDb -> {
-        // // Fill the object of 'many' class with information and
-        // // create the relationship between 'many' object and the 'one' object
-        // detail.setQuantity(util.getQuantity());
-        // detail.setTotal(productDb.getPrice() * util.getQuantity());
-
-        // detail.setProduct(productDb);
-        // details.add(detail);
-        // });
-        // }
-
-        // return (List<DetailedPurchaseHistory>) repository.saveAll(details);
     }
-
 }

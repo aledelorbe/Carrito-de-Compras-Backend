@@ -1,8 +1,6 @@
 package com.alejandro.carritodecompras.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.services.PurchaseHistoryService;
+import com.alejandro.carritodecompras.utils.UtilDetail;
+import com.alejandro.carritodecompras.utils.UtilValidation;
 
 import jakarta.validation.Valid;
-import utils.UtilDetail;
 
 @RestController // To create a api rest.
 @RequestMapping("/api/purchases") // To create a base path.
@@ -27,38 +26,25 @@ public class PurchaseHistoryController {
     @Autowired
     private PurchaseHistoryService service;
 
+    @Autowired
+    private UtilValidation utilValidation;
+
     // -----------------------------
     // Methods for PurchaseHistory entity
     // -----------------------------
 
     // To create an endpoint that allows invocating the method saveDetailedsPurchaseHistory.
     // The annotation called 'RequestBody' allows receiving data of many products
-    // This endpoint is only used to test the 'addDetailProducts' method ****
+    // This endpoint is only used to test the 'addPurchase' method ****
     @PostMapping("/many")
     public ResponseEntity<?> savePurchase(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
-            return validation(result);
+            return utilValidation.validation(result);
         }
 
         // When a new detail is created to respond return the same detail
         PurchaseHistory newPurchaseHistory = service.addPurchase(utilDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPurchaseHistory);
-    }
-
-    // -----------------------------
-    // Method to validate
-    // -----------------------------
-
-    // To send a JSON object with messages about the obligations of each object
-    // attribute
-    private ResponseEntity<?> validation(BindingResult result) {
-        Map<String, String> errors = new HashMap<>();
-
-        result.getFieldErrors().forEach(e -> {
-            errors.put(e.getField(), "El campo " + e.getField() + " " + e.getDefaultMessage());
-        });
-
-        return ResponseEntity.badRequest().body(errors);
     }
 }

@@ -3,8 +3,7 @@ package com.alejandro.carritodecompras.services;
 import java.util.List;
 
 import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
-
-import utils.UtilDetail;
+import com.alejandro.carritodecompras.utils.UtilDetail;
 
 public interface DetailedPurchaseHistoryService {
 

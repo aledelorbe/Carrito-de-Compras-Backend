@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 // To specific the name of the table in mysql
@@ -28,6 +29,9 @@ public class PurchaseHistory {
     @Column(name = "id_purchase_history")
     private Long id;
 
+    // the attributes: firstImage, total and date can be empty because they are
+    // calculate
+    // in the 'addPurchase' method.
     @Column(name = "first_image")
     private String firstImage;
 
@@ -82,5 +86,11 @@ public class PurchaseHistory {
 
     public void setDetails(List<DetailedPurchaseHistory> details) {
         this.details = details;
+    }
+
+    // To set the date when the record is saved in the db 
+    @PrePersist
+    public void prePersist() {
+        this.date = LocalDate.now();
     }
 }
