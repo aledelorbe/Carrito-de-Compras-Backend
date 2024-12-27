@@ -37,6 +37,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
     @Transactional
     public PurchaseHistory addPurchase(List<UtilDetail> utilDetails) {
 
+        // To set the information of a new purchase
         PurchaseHistory newPurchaseHistory = new PurchaseHistory();
         Double total = 0.0;
         boolean isFirstCicle = true;

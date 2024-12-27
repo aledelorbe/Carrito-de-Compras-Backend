@@ -33,7 +33,7 @@ public class PurchaseHistoryController {
     // Methods for PurchaseHistory entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the method saveDetailedsPurchaseHistory.
+    // To create an endpoint that allows invoking the 'addPurchase' method.
     // The annotation called 'RequestBody' allows receiving data of many products
     // This endpoint is only used to test the 'addPurchase' method ****
     @PostMapping("/many")
@@ -43,7 +43,7 @@ public class PurchaseHistoryController {
             return utilValidation.validation(result);
         }
 
-        // When a new detail is created to respond return the same detail
+        // When a new purchase is created to respond return the same purchase
         PurchaseHistory newPurchaseHistory = service.addPurchase(utilDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPurchaseHistory);
     }

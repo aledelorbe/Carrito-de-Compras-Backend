@@ -33,9 +33,9 @@ public class DetailedPurchaseHistoryController {
     // Methods for DetailedPurchaseHistory entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the method addDetailProduct.
+    // To create an endpoint that allows invoking the 'addDetailPurchase' method.
     // The annotation called 'RequestBody' allows receiving data of a product
-    // This endpoint is only used to test the 'addDetailProduct' method ****
+    // This endpoint is only used to test the 'addDetailPurchase' method ****
     @PostMapping()
     public ResponseEntity<?> saveDetailPurchase(@Valid @RequestBody UtilDetail utilDetail, BindingResult result) {
         // To handle the obligations of object attributes
@@ -48,19 +48,17 @@ public class DetailedPurchaseHistoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newDetailedPurchaseHistory);
     }
 
-    // To create an endpoint that allows invocating the method
-    // saveDetailedsPurchaseHistory.
+    // To create an endpoint that allows invoking the 'addDetailsPurchase' method.
     // The annotation called 'RequestBody' allows receiving data of many products
-    // This endpoint is only used to test the 'addDetailProducts' method ****
+    // This endpoint is only used to test the 'addDetailsPurchase' method ****
     @PostMapping("/many")
-    public ResponseEntity<?> saveDetailsPurchase(@Valid @RequestBody List<UtilDetail> utilDetails,
-            BindingResult result) {
+    public ResponseEntity<?> saveDetailsPurchase(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
         }
 
-        // When a new detail is created to respond return the same detail
+        // When many new details are created to respond return the same many details
         List<DetailedPurchaseHistory> newDetailedsPurchaseHistory = service.addDetailsPurchase(utilDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(newDetailedsPurchaseHistory);
     }

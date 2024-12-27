@@ -2,7 +2,7 @@ package com.alejandro.carritodecompras.entities;
 
 import java.time.LocalDateTime;
 
-// This entity is used to create the error messages
+// This class is used to create the error messages
 // when an exception is fired 
 public class ErrorMessage {
 

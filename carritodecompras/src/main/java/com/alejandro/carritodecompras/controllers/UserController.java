@@ -31,10 +31,6 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    // To Inject the service dependency
-    // @Autowired
-    // private PurchaseHistoryService purchaseService;
-
     @Autowired
     private UtilValidation utilValidation;
 
@@ -42,17 +38,18 @@ public class UserController {
     // Methods for user entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the method findAll.
+    // To create an endpoint that allows invoking the method findAll.
     @GetMapping()
     public List<User> users() {
         return service.findAll();
     }
 
-    // To create an endpoint that allows invocating the method fingById.
+    // To create an endpoint that allows invoking the method findById.
     @GetMapping("/{id}")
     public ResponseEntity<?> user(@PathVariable Long id) {
         // Search a specific user and if it's present then return it.
         Optional<User> optionalUser = service.findById(id);
+
         if (optionalUser.isPresent()) {
             return ResponseEntity.ok(optionalUser.orElseThrow());
         }
@@ -60,7 +57,7 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows invocating the method save.
+    // To create an endpoint that allows invoking the method save.
     // The annotation called 'RequestBody' allows receiving data of a user
     @PostMapping()
     public ResponseEntity<?> saveUser(@Valid @RequestBody User user, BindingResult result) {
@@ -74,11 +71,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
-    // To create an endpoint that allows update all of atributte values a specific
-    // user based its id.
+    // To create an endpoint that allows updating all of the values 
+    // of a specific user based its id.
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult result,
-            @PathVariable Long id) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
@@ -110,17 +106,16 @@ public class UserController {
     // Methods for purchase entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the 'addPurchaseToUser' method.
+    // To create an endpoint that allows invoking the 'addPurchaseToUser' method.
     // The annotation called 'RequestBody' allows receiving data of a user
     @PostMapping("/{userId}/purchase")
-    public ResponseEntity<?> addPurchaseToUser(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result,
-            @PathVariable Long userId) {
+    public ResponseEntity<?> addPurchaseToUser(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result, @PathVariable Long userId) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
         }
 
-        // Search for a specific user if it exists then save the pet
+        // Search for a specific user if it exists then invoke the method 'addPurchaseToUser'.
         Optional<User> optionalUser = service.findById(userId);
 
         if (optionalUser.isPresent()) {
@@ -131,12 +126,12 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows invocating the 'getPurchasesByUserId' method.
+    // To create an endpoint that allows invoking the 'getPurchasesByUserId' method.
     // The annotation called 'RequestBody' allows receiving data of a user
     @GetMapping("/{userId}/purchases")
-    public ResponseEntity<?> getPurchasesOfUser(@PathVariable Long userId) {
+    public ResponseEntity<?> getPurchasesByUserId(@PathVariable Long userId) {
 
-        // Search for a specific user if it exists then save the pet
+        // Search for a specific user if it exists then invoke the method 'getPurchasesByUserId'.
         Optional<User> optionalUser = service.findById(userId);
 
         if (optionalUser.isPresent()) {
@@ -150,12 +145,12 @@ public class UserController {
     // Methods for detail entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the 'getDetailsOfPurchaseByUserId' method.
+    // To create an endpoint that allows invoking the 'getDetailsOfPurchaseByUserId' method.
     // The annotation called 'RequestBody' allows receiving data of a user
     @GetMapping("/{userId}/purchases/{purchaseId}")
-    public ResponseEntity<?> getDetailsOfPurchaseOfUser(@PathVariable Long userId, @PathVariable Long purchaseId) {
+    public ResponseEntity<?> getDetailsOfPurchaseByUserId(@PathVariable Long userId, @PathVariable Long purchaseId) {
 
-        // Search for a specific user if it exists then save the pet
+        // Search for a specific user if it exists then invoke the method 'getDetailsOfPurchaseByUserId'.
         Optional<User> optionalUser = service.findById(userId);
 
         if (optionalUser.isPresent()) {

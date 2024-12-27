@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.alejandro.carritodecompras.entities.ErrorMessage;
 
+// This class is used to handle when an exception is fired 
 @RestControllerAdvice
 public class ExceptionController {
 

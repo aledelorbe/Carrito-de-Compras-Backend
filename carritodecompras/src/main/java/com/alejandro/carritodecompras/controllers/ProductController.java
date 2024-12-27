@@ -38,17 +38,18 @@ public class ProductController {
     // Methods for product entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the method findAll.
+    // To create an endpoint that allows invoking the method findAll.
     @GetMapping()
     public List<Product> products() {
         return service.findAll();
     }
 
-    // To create an endpoint that allows invocating the method fingById.
+    // To create an endpoint that allows invoking the method fingById.
     @GetMapping("/{id}")
     public ResponseEntity<?> product(@PathVariable Long id) {
         // Search a specific product and if it's present then return it.
         Optional<Product> optionalProduct = service.findById(id);
+
         if (optionalProduct.isPresent()) {
             return ResponseEntity.ok(optionalProduct.orElseThrow());
         }
@@ -56,7 +57,7 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows invocating the method save.
+    // To create an endpoint that allows invoking the method save.
     // The annotation called 'RequestBody' allows receiving data of a product
     @PostMapping()
     public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product, BindingResult result) {
@@ -74,8 +75,7 @@ public class ProductController {
     // To create an endpoint that allows update all of atributte values a specific
     // product based its id.
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result,
-            @PathVariable Long id) {
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result, @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
@@ -97,6 +97,7 @@ public class ProductController {
     public ResponseEntity<?> updateStatusProduct(@PathVariable Long id) {
         // Find specific product and if it's present then return specific product
         Optional<Product> optionalProduct = service.updateStatusByProductId(id);
+        
         if (optionalProduct.isPresent()) {
             return ResponseEntity.ok(optionalProduct.orElseThrow());
         }

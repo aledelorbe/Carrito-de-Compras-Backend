@@ -101,12 +101,14 @@ public class UserServiceImp implements UserService {
         return repository.save(userDb);
     }
 
+    // To get all the purchases of a certain user
     @Override
     @Transactional(readOnly = true)
     public List<PurchaseHistory> getPurchasesByUserId(Long userId) {
         return repository.getPurchasesByUserId(userId);
     }
 
+    // To get all the details of a certain purchase of a certain user
     @Override
     @Transactional(readOnly = true)
     public List<DetailedPurchaseHistoryDto> getDetailsOfPurchaseByUserId(Long userId, Long purchaseId) {
