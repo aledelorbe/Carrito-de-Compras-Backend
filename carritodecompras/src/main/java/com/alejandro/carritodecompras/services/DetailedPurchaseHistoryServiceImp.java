@@ -26,16 +26,8 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     private ProductRepository productRepository;
 
     // -----------------------------
-    // Methods for product entity
+    // Methods for DetailedPurchaseHistory entity
     // -----------------------------
-
-    // To list all of products (records) in the table 'products'
-    @Override
-    @Transactional(readOnly = true)
-    public List<DetailedPurchaseHistory> findAllByPurchaseHistoryId(Long id) {
-        return (List<DetailedPurchaseHistory>) repository.findAll(); // cast because the method findAll returns an
-                                                                     // iterable.
-    }
 
     // To save a new detail in the db
     // and the relationship of this object with the product record.

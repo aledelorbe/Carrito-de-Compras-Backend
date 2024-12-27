@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -36,6 +37,7 @@ public class Product {
     private String category;
     
     @NotNull // To obligate to this attribute not to empty
+    @Min(1) // To obligate to this attribute to contains a value equal to or greater than one
     private Double price;
     
     @NotBlank // To obligate to this attribute not to empty or blank values.

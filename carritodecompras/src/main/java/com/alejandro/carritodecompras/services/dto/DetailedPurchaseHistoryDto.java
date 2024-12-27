@@ -2,6 +2,8 @@ package com.alejandro.carritodecompras.services.dto;
 
 import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
 
+// To create a view for the 'DetailedPurchaseHistory' objects
+// This view is used when a user requests to watch all the details of a certain purchase
 public class DetailedPurchaseHistoryDto {
 
     private DetailedPurchaseHistory detail;

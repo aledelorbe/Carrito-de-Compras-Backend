@@ -13,8 +13,6 @@ public interface DetailedPurchaseHistoryService {
     // Methods for DetailedPurchaseHistory entity
     // -----------------------------
 
-    public List<DetailedPurchaseHistory> findAllByPurchaseHistoryId(Long id);
-
     public DetailedPurchaseHistory addDetailPurchase(UtilDetail utilDetail);
 
     public List<DetailedPurchaseHistory> addDetailsPurchase(List<UtilDetail> utilDetails);

@@ -37,8 +37,10 @@ public class PurchaseHistory {
     @Column(name = "first_image")
     private String firstImage;
 
+    // This attribute is calculate in the 'addPurchase' method.
     private Double total;
 
+    // This attribute is set in cycle life events of object entities
     private LocalDate date;
 
     // To set a relationship one to many
