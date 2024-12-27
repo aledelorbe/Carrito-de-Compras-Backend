@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.entities.User;
 import com.alejandro.carritodecompras.repositories.UserRepository;
+import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
 import com.alejandro.carritodecompras.utils.UtilDetail;
 
 @Service
@@ -98,5 +99,17 @@ public class UserServiceImp implements UserService {
         userDb.getPurchases().add(purchaseDb);
 
         return repository.save(userDb);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PurchaseHistory> getPurchasesByUserId(Long userId) {
+        return repository.getPurchasesByUserId(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DetailedPurchaseHistoryDto> getDetailsOfPurchaseByUserId(Long userId, Long purchaseId) {
+        return repository.getDetailsOfPurchaseByUserId(userId, purchaseId);
     }
 }

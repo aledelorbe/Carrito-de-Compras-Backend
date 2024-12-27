@@ -1,5 +1,7 @@
 package com.alejandro.carritodecompras.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,6 +64,7 @@ public class DetailedPurchaseHistory {
         this.total = total;
     }
 
+    @JsonIgnore
     public Product getProduct() {
         return product;
     }

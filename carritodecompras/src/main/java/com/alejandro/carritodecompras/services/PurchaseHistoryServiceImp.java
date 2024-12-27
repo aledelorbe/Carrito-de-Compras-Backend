@@ -28,6 +28,10 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
     @Autowired
     private DetailedPurchaseHistoryService detailedRepository;
 
+    // -----------------------------
+    // Methods for purchase_history entity
+    // -----------------------------
+
     // To save a purchase and the details of this purchase in the db
     @Override
     @Transactional
@@ -55,7 +59,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
         }
         newPurchaseHistory.setTotal(total);
         newPurchaseHistory.setDetails(detailedRepository.addDetailsPurchase(utilDetails));
-        // the date is set in the 'PurchaseHistory' entity 
+        // the date is set in the 'PurchaseHistory' entity
 
         return repository.save(newPurchaseHistory);
     }

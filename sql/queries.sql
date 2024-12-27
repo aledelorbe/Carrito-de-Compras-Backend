@@ -29,3 +29,23 @@ from purchase_history;
 select *
 from user;
 
+-- Queries 
+
+-- All the purchases of a certain user 
+select p.* 
+from user u
+inner join purchase_history p 
+on u.id_user = p.id_user
+where u.id_user = 1;
+
+-- All the products in a certain purchase of a certain user 
+select d.*, pro.name, pro.image
+from user u
+inner join purchase_history p 
+on u.id_user = p.id_user
+inner join detailed_purchase_history d
+on d.id_purchase_history = p.id_purchase_history
+inner join product pro
+on pro.id_product = d.id_product
+where u.id_user = 1 and p.id_purchase_history = 1;
+

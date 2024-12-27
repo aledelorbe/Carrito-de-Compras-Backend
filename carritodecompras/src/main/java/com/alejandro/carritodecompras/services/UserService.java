@@ -3,7 +3,9 @@ package com.alejandro.carritodecompras.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.entities.User;
+import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
 import com.alejandro.carritodecompras.utils.UtilDetail;
 
 public interface UserService {
@@ -29,4 +31,8 @@ public interface UserService {
     // -----------------------------
 
     public User addPurchaseToUser(User userDb, List<UtilDetail> utilDetails);
+
+    public List<PurchaseHistory> getPurchasesByUserId(Long userId);
+    
+    public List<DetailedPurchaseHistoryDto> getDetailsOfPurchaseByUserId(Long userId, Long purchaseId);
 }

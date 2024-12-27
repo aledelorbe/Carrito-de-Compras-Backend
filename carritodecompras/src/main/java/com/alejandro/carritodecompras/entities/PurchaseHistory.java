@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -80,6 +82,7 @@ public class PurchaseHistory {
         this.date = date;
     }
 
+    @JsonIgnore // To not send the information about 'details'
     public List<DetailedPurchaseHistory> getDetails() {
         return details;
     }
