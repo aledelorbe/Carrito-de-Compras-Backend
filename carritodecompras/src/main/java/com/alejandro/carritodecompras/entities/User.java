@@ -14,13 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 // To specific the name of the table in mysql
 // In mysql the name of this table is 'user' but in this project 
 // the name of this class is 'User'
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(name = "UK_user", columnNames = { "name", "lastname" }))
 public class User {
 
     // Mapping of class attributes with table fields in mysql
