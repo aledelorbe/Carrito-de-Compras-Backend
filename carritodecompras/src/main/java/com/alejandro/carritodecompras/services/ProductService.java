@@ -22,4 +22,14 @@ public interface ProductService {
     public Optional<Product> update(Long id, Product product);
 
     public Optional<Product> updateStatusByProductId(Long id);
+
+    // -----------------------------
+    // Methods for custom queries of product entity
+    // -----------------------------
+
+    public List<Product> findAllAvailableProducts(Long status);
+
+    public List<Product> findAllAvailableProductsByCategory(Long status, String category);
+    
+    public List<Product> findAllAvailableProductsByBrand(Long status, String brand);
 }

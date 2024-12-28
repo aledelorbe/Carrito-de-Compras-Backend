@@ -75,7 +75,8 @@ public class ProductController {
     // To create an endpoint that allows update all of atributte values a specific
     // product based its id.
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result,
+            @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
@@ -97,11 +98,36 @@ public class ProductController {
     public ResponseEntity<?> updateStatusProduct(@PathVariable Long id) {
         // Find specific product and if it's present then return specific product
         Optional<Product> optionalProduct = service.updateStatusByProductId(id);
-        
+
         if (optionalProduct.isPresent()) {
             return ResponseEntity.ok(optionalProduct.orElseThrow());
         }
         // Else return code response 404
         return ResponseEntity.notFound().build();
+    }
+
+    // -----------------------------
+    // Methods for custom queries of product entity
+    // -----------------------------
+
+    // To create an endpoint that allows invoking the method
+    // findAllAvailableProducts.
+    @GetMapping("/available")
+    public List<Product> availableProducts() {
+        return service.findAllAvailableProducts(1L);
+    }
+
+    // To create an endpoint that allows invoking the method
+    // findAllAvailableProductsByCategory.
+    @GetMapping("/available/category/{category}")
+    public List<Product> availableProductsByCategory(@PathVariable String category) {
+        return service.findAllAvailableProductsByCategory(1L, category);
+    }
+
+    // To create an endpoint that allows invoking the method
+    // findAllAvailableProductsByBrand.
+    @GetMapping("/available/brand/{brand}")
+    public List<Product> availableProductsByBrand(@PathVariable String brand) {
+        return service.findAllAvailableProductsByBrand(1L, brand);
     }
 }

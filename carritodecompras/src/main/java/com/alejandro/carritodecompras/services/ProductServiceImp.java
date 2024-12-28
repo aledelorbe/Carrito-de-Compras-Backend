@@ -75,19 +75,43 @@ public class ProductServiceImp implements ProductService {
         // Search for a specific product
         Optional<Product> optionalProduct = repository.findById(id);
 
-        // If the product is present then change the status from inactive to 
+        // If the product is present then change the status from inactive to
         // active or vice versa
         optionalProduct.ifPresent(productDb -> {
-            if(productDb.getStatus() == 1) {
+            if (productDb.getStatus() == 1) {
                 productDb.setStatus(0L);
-            }
-            else{
+            } else {
                 productDb.setStatus(1L);
             }
             repository.save(productDb);
         });
 
         return optionalProduct;
+    }
+
+    // -----------------------------
+    // Methods for custom queries of product entity
+    // -----------------------------
+
+    // To get all the available products (with status 1)
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findAllAvailableProducts(Long status) {
+        return repository.findByStatus(status);
+    }
+
+    // To get all the available products (with status 1) with certain category.
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findAllAvailableProductsByCategory(Long status, String category) {
+        return repository.findByStatusAndCategory(status, category);
+    }
+
+    // To get all the available products (with status 1) with certain brand.
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findAllAvailableProductsByBrand(Long status, String brand) {
+        return repository.findByStatusAndBrand(status, brand);
     }
 
 }
