@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 // To specific the name of the table in mysql
 // In mysql the name of this table is 'detailed_purchase_history' but in this project 
@@ -26,7 +25,7 @@ public class DetailedPurchaseHistory {
     @Column(name = "id_detail")
     private Long id;
 
-    @NotNull // To obligate to this attribute not to empty
+    // this attribute can be an empty value because it's set in 'addDetailProduct' method
     private Long quantity;
 
     // this attribute can be an empty value because it's calculate in 'addDetailProduct' method
