@@ -10,7 +10,7 @@
 			"name": "products",
 			"item": [
 				{
-					"name": "products",
+					"name": "allProducts",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -115,7 +115,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/products/9",
+							"raw": "http://localhost:8081/api/products/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -124,7 +124,74 @@
 							"path": [
 								"api",
 								"products",
-								"9"
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allAvailableProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/products/available",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"products",
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allAvailableProductsByCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/products/available/category/VideoGame",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"products",
+								"available",
+								"category",
+								"VideoGame"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allAvailableProductsByBrand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/products/available/brand/Xbox",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"products",
+								"available",
+								"brand",
+								"Xbox"
 							]
 						}
 					},
