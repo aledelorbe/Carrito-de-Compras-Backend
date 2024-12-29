@@ -71,7 +71,22 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 Se planea integrar la tecnología de **JWT** para autenticar y autorizar a los usuarios de forma segura.
 
-Además, se planea agregar el atributo `stock` a la entidad `Product` para tener un control sobre cuántas unidades se dispone de un mismo producto, de tal manera que si el `stock` llega a 0, ese producto no se mostrará más en la lista de productos disponibles.
+Además, se planea agregar el atributo `stock` a la entidad `Product` para tener un control sobre cuántas unidades se disponen de un mismo producto. De tal manera que, si el `stock` llega a 0, ese producto no se mostrará más en la lista de productos disponibles.
+
+Falta agregar una entidad administradora que pueda:
+- Agregar nuevos productos.
+- Actualizar la información de productos.
+- Cambiar el estado de productos.
+- Ver todos los productos por categoría o por marca, sin importar el estado.
+- Encontrar un producto por su nombre, independientemente de su estado.
+
+El usuario podrá encontrar un producto por su nombre solo si su estado es activo.
+
+Se debe comprobar que, cuando se elimina un usuario, se elimine en cascada toda su información.
+
+## Demo
+
+Puedes ver una demo del proyecto en el siguiente enlace: [Carrito de Compras (Backend)](Carrito de Compras (Backend)).
 
 ---
 
@@ -146,5 +161,21 @@ This project involves developing a backend to manage information related to prod
 
 ## Future Improvements
 
-- Plan to integrate **JWT** technology to authenticate and authorize users securely.
-- Plan to add the `stock` attribute to the `Product` entity to track the available units of each product. If the `stock` reaches 0, the product will no longer be displayed in the list of available products.
+The integration of **JWT** technology is planned to securely authenticate and authorize users.
+
+Additionally, the `stock` attribute will be added to the `Product` entity to keep track of how many units of the same product are available. If the `stock` reaches 0, that product will no longer appear in the list of available products.
+
+An administrative entity needs to be added to:
+- Add new products.
+- Update product information.
+- Change product status.
+- View all products by category or brand, regardless of their status.
+- Find a product by name, regardless of its status.
+
+Users will only be able to find a product by its name if its status is active.
+
+It must be ensured that when a user is deleted, all their information is deleted in cascade.
+
+## Demo
+
+You can view a demo of the project at the following link: [Shopping Cart (Backend)](Shopping Cart (Backend)).  
