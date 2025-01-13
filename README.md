@@ -84,6 +84,10 @@ El usuario podrá encontrar un producto por su nombre solo si su estado es activ
 
 Se debe comprobar que, cuando se elimina un usuario, se elimine en cascada toda su información.
 
+Mencionar que se usa el patron de diseño arquitectonico DTO.
+
+Desplegar el proyecto en AWS.
+
 ## Demo
 
 Puedes ver una demo del proyecto en el siguiente enlace: [Carrito de Compras (Backend)](Carrito de Compras (Backend)).
@@ -175,6 +179,10 @@ An administrative entity needs to be added to:
 Users will only be able to find a product by its name if its status is active.
 
 It must be ensured that when a user is deleted, all their information is deleted in cascade.
+
+Mention that the architectural design pattern DTO is used.
+
+Deploy the project on AWS.
 
 ## Demo
 
