@@ -71,6 +71,10 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 Se planea integrar la tecnología de **JWT** para autenticar y autorizar a los usuarios de forma segura.
 
+Crear una tabla mas llamada `status` el cual contendra varios tipos de valores.
+
+Un pedido lo podra cancelar el usuario.
+
 Además, se planea agregar el atributo `stock` a la entidad `Product` para tener un control sobre cuántas unidades se disponen de un mismo producto. De tal manera que, si el `stock` llega a 0, ese producto no se mostrará más en la lista de productos disponibles.
 
 Falta agregar una entidad administradora que pueda:
@@ -85,6 +89,10 @@ El usuario podrá encontrar un producto por su nombre solo si su estado es activ
 Se debe comprobar que, cuando se elimina un usuario, se elimine en cascada toda su información.
 
 Mencionar que se usa el patron de diseño arquitectonico DTO.
+
+Reorganizar el apartado 'caracteristicas' del readme como los demas proyectos.
+
+En la carpeta aop/ hace falta corregir unos comentarios. De ahi mismo verificar que se esten aplicando a los metodos save y update.
 
 Desplegar el proyecto en AWS.
 
