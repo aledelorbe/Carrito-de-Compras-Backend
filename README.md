@@ -98,7 +98,7 @@ Desplegar el proyecto en AWS.
 
 ## Demo
 
-Puedes ver una demo del proyecto en el siguiente enlace: [Carrito de Compras](Carrito de Compras).
+Puedes ver una demo del proyecto en el siguiente enlace: [Carrito de Compras](CarritodeCompras).
 
 ---
 
@@ -194,4 +194,4 @@ Deploy the project on AWS.
 
 ## Demo
 
-You can view a demo of the project at the following link: [Shopping Cart](Shopping Cart).  
+You can view a demo of the project at the following link: [Shopping Cart](ShoppingCart).  
