@@ -96,6 +96,10 @@ En la carpeta aop/ hace falta corregir unos comentarios. De ahi mismo verificar 
 
 Desplegar el proyecto en AWS.
 
+Integrar jenkins
+
+Mandarle un correo al usuario indicando que su compra fue realizada.
+
 ## Demo
 
 Puedes ver una demo del proyecto en el siguiente enlace: [Carrito de Compras](CarritodeCompras).
