@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.entities;
+package com.alejandro.carritodecompras.product.models.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +39,10 @@ public class Product {
     @NotNull // To obligate to this attribute not to empty
     @Min(1) // To obligate to this attribute to contains a value equal to or greater than one
     private Double price;
+
+    @NotNull // To obligate to this attribute not to empty
+    @Min(0) // To obligate to this attribute to contains a value equal to or greater than zero
+    private Long stock;
     
     @NotBlank // To obligate to this attribute not to empty or blank values.
     private String image;
@@ -102,6 +106,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Long getStock() {
+        return stock;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
     }
 
     public Long getStatus() {

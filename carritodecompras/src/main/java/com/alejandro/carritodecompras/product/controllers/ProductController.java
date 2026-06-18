@@ -1,11 +1,14 @@
-package com.alejandro.carritodecompras.controllers;
+package com.alejandro.carritodecompras.product.controllers;
+
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,12 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.entities.Product;
+import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.entities.Product;
 
-import com.alejandro.carritodecompras.services.ProductService;
+import com.alejandro.carritodecompras.product.services.ProductService;
 import com.alejandro.carritodecompras.utils.UtilValidation;
+
 
 @RestController // To create a api rest.
 @RequestMapping("/api/products") // To create a base path.
@@ -29,7 +35,7 @@ public class ProductController {
 
     // To Inject the service dependency
     @Autowired
-    private ProductService service;
+    private ProductService productService;
 
     @Autowired
     private UtilValidation utilValidation;
@@ -38,26 +44,22 @@ public class ProductController {
     // Methods for product entity
     // -----------------------------
 
-    // To create an endpoint that allows invoking the method findAll.
-    @GetMapping()
-    public List<Product> products() {
-        return service.findAll();
+    // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
+
+    // To create an endpoint that allows invoking the findAllPerGroup method.
+    @GetMapping("/all")
+    public ResponseEntity<?> products(
+        @RequestParam(defaultValue = "0") 
+        @Min(value = 0, message = "The page number must be greater than or equal to 0")
+        int page,
+        @RequestParam(defaultValue = "5") 
+        @Min(value = 5, message = "The page size must be greater than or equal to 5")
+        int size) 
+    {
+        return ResponseEntity.ok(productService.findAllPerGroup(page, size));
     }
-
-    // To create an endpoint that allows invoking the method fingById.
-    @GetMapping("/{id}")
-    public ResponseEntity<?> product(@PathVariable Long id) {
-        // Search a specific product and if it's present then return it.
-        Optional<Product> optionalProduct = service.findById(id);
-
-        if (optionalProduct.isPresent()) {
-            return ResponseEntity.ok(optionalProduct.orElseThrow());
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
-
-    // To create an endpoint that allows invoking the method save.
+    
+    // To create an endpoint that allows invoking the save method.
     // The annotation called 'RequestBody' allows receiving data of a product
     @PostMapping()
     public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product, BindingResult result) {
@@ -65,26 +67,26 @@ public class ProductController {
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
         }
-
+        
         // When a new product is created to respond return the same product
         product.setStatus(1L);
-        Product newProduct = service.save(product);
+        Product newProduct = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
-
+    
     // To create an endpoint that allows update all of atributte values a specific
     // product based its id.
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result,
-            @PathVariable Long id) {
+    @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
         }
-
+        
         // Find specific product and if it's present then return specific product
-        Optional<Product> optionalProduct = service.update(id, product);
-
+        Optional<Product> optionalProduct = productService.update(id, product);
+        
         if (optionalProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(optionalProduct.orElseThrow());
         }
@@ -97,12 +99,27 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateStatusProduct(@PathVariable Long id) {
         // Find specific product and if it's present then return specific product
-        Optional<Product> optionalProduct = service.updateStatusByProductId(id);
+        Optional<Product> optionalProduct = productService.updateStatusByProductId(id);
 
         if (optionalProduct.isPresent()) {
             return ResponseEntity.ok(optionalProduct.orElseThrow());
         }
         // Else return code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
+        
+    // To create an endpoint that allows invoking the findById method.
+    @GetMapping("/{id}")
+    public ResponseEntity<?> product(@PathVariable Long id) {
+        // Search a specific product and if it's present then return it.
+        Optional<Product> optionalProduct = productService.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            return ResponseEntity.ok(optionalProduct.orElseThrow());
+        }
+        // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 
@@ -114,20 +131,21 @@ public class ProductController {
     // findAllAvailableProducts.
     @GetMapping("/available")
     public List<Product> availableProducts() {
-        return service.findAllAvailableProducts(1L);
+        return productService.findAllAvailableProducts(1L);
     }
 
     // To create an endpoint that allows invoking the method
     // findAllAvailableProductsByCategory.
     @GetMapping("/available/category/{category}")
     public List<Product> availableProductsByCategory(@PathVariable String category) {
-        return service.findAllAvailableProductsByCategory(1L, category);
+        return productService.findAllAvailableProductsByCategory(1L, category);
     }
 
     // To create an endpoint that allows invoking the method
     // findAllAvailableProductsByBrand.
     @GetMapping("/available/brand/{brand}")
     public List<Product> availableProductsByBrand(@PathVariable String brand) {
-        return service.findAllAvailableProductsByBrand(1L, brand);
+        return productService.findAllAvailableProductsByBrand(1L, brand);
     }
+
 }

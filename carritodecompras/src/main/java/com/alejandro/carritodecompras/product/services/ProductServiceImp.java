@@ -1,14 +1,21 @@
-package com.alejandro.carritodecompras.services;
+package com.alejandro.carritodecompras.product.services;
+
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alejandro.carritodecompras.entities.Product;
-import com.alejandro.carritodecompras.repositories.ProductRepository;
+import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.entities.Product;
+import com.alejandro.carritodecompras.product.repositories.ProductRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -21,18 +28,15 @@ public class ProductServiceImp implements ProductService {
     // Methods for product entity
     // -----------------------------
 
+    // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
+
     // To list all of products (records) in the table 'products'
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAll() {
-        return (List<Product>) repository.findAll(); // cast because the method findAll returns an iterable.
-    }
-
-    // To get a specific product based on its id
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Product> findById(Long id) {
-        return repository.findById(id);
+    public PageResponseDto<Product> findAllPerGroup(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findAll(pageable);
+        return PageResponseDto.fromPage(pageResult);
     }
 
     // To save a new product in the db
@@ -89,6 +93,15 @@ public class ProductServiceImp implements ProductService {
         return optionalProduct;
     }
 
+    // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
+
+    // To get a specific product based on its id
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Product> findById(Long id) {
+        return repository.findById(id);
+    }
+
     // -----------------------------
     // Methods for custom queries of product entity
     // -----------------------------
@@ -96,8 +109,11 @@ public class ProductServiceImp implements ProductService {
     // To get all the available products (with status 1)
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAllAvailableProducts(Long status) {
-        return repository.findByStatus(status);
+    public PageResponseDto<Product> findAllAvailableProducts(Long status, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findByStatus(status, pageable);
+
+        return PageResponseDto.fromPage(pageResult);
     }
 
     // To get all the available products (with status 1) with certain category.
