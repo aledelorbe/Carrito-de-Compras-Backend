@@ -1,6 +1,7 @@
 package com.alejandro.carritodecompras.product.services;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.dtos.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
@@ -37,6 +39,13 @@ public class ProductServiceImp implements ProductService {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Product> pageResult = repository.findAll(pageable);
         return PageResponseDto.fromPage(pageResult);
+    }
+
+    // To get a specific product based on its id
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Product> findById(Long id) {
+        return repository.findById(id);
     }
 
     // To save a new product in the db
@@ -98,13 +107,20 @@ public class ProductServiceImp implements ProductService {
     // To get a specific product based on its id
     @Override
     @Transactional(readOnly = true)
-    public Optional<Product> findById(Long id) {
-        return repository.findById(id);
+    public Optional<ProductUserResponseProjection> findPublicProductById(Long id) {
+        return repository.findPublicProductById(id);
     }
 
     // -----------------------------
     // Methods for custom queries of product entity
     // -----------------------------
+
+    // To get all the available products (with status 1) with a name that contains a specific string, ignoring case sensitivity.
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductSearchProjection> findTop10ByStatusAndNameContainingIgnoreCase(Long status, String name){
+        return repository.findTop10ByStatusAndNameContainingIgnoreCase(status, name);
+    }
 
     // To get all the available products (with status 1)
     @Override

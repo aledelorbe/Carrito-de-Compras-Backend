@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 
 import com.alejandro.carritodecompras.product.services.ProductService;
@@ -56,6 +57,19 @@ public class ProductController {
         int size) 
     {
         return ResponseEntity.ok(productService.findAllPerGroup(page, size));
+    }
+
+    // To create an endpoint that allows invoking the findById method.
+    @GetMapping("/{id}")
+    public ResponseEntity<?> product(@PathVariable Long id) {
+        // Search a specific product and if it's present then return it.
+        Optional<Product> optionalProduct = productService.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            return ResponseEntity.ok(optionalProduct.orElseThrow());
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
     }
     
     // To create an endpoint that allows invoking the save method.
@@ -110,16 +124,22 @@ public class ProductController {
     // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
         
     // To create an endpoint that allows invoking the findById method.
-    @GetMapping("/{id}")
-    public ResponseEntity<?> product(@PathVariable Long id) {
+    @GetMapping("/public/{id}")
+    public ResponseEntity<?> getPublicProduct(@PathVariable Long id) {
         // Search a specific product and if it's present then return it.
-        Optional<Product> optionalProduct = productService.findById(id);
+        Optional<ProductUserResponseProjection> optionalProduct = productService.findPublicProductById(id);
 
         if (optionalProduct.isPresent()) {
             return ResponseEntity.ok(optionalProduct.orElseThrow());
         }
         // Else returns code response 404
         return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows invoking the findByName method.
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> productByName(@PathVariable String name) {
+        return ResponseEntity.ok(productService.findTop10ByStatusAndNameContainingIgnoreCase(1L, name));
     }
 
     // -----------------------------

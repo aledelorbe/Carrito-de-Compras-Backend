@@ -123,4 +123,5 @@ public class Product {
     public void setStatus(Long status) {
         this.status = status;
     }
+    
 }

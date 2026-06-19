@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.dtos.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 
@@ -21,6 +22,8 @@ public interface ProductService {
 
     PageResponseDto<Product> findAllPerGroup(int page, int pageSize);
 
+    Optional<Product> findById(Long id);
+
     Product save(Product product);
 
     Optional<Product> update(Long id, Product product);
@@ -29,7 +32,9 @@ public interface ProductService {
 
     // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
 
-    Optional<Product> findById(Long id);
+    Optional<ProductUserResponseProjection> findPublicProductById(Long id);
+    
+    List<ProductSearchProjection> findTop10ByStatusAndNameContainingIgnoreCase(Long status, String name);
 
     // -----------------------------
     // Methods for custom queries of product entity
