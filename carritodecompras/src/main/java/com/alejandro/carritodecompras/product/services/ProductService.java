@@ -36,7 +36,8 @@ public interface ProductService {
 
     PageResponseDto<Product> findAllAvailableProducts(Long status, int page, int pageSize);
 
-    List<Product> findAllAvailableProductsByCategory(Long status, String category);
+    PageResponseDto<Product> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize);
+
+    PageResponseDto<Product> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize);
     
-    List<Product> findAllAvailableProductsByBrand(Long status, String brand);
 }

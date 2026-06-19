@@ -4,11 +4,9 @@ package com.alejandro.carritodecompras.product.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 
 import com.alejandro.carritodecompras.product.services.ProductService;
@@ -48,7 +45,7 @@ public class ProductController {
 
     // To create an endpoint that allows invoking the findAllPerGroup method.
     @GetMapping("/all")
-    public ResponseEntity<?> products(
+    public ResponseEntity<?> getAllProducts(
         @RequestParam(defaultValue = "0") 
         @Min(value = 0, message = "The page number must be greater than or equal to 0")
         int page,
@@ -130,22 +127,35 @@ public class ProductController {
     // To create an endpoint that allows invoking the method
     // findAllAvailableProducts.
     @GetMapping("/available")
-    public List<Product> availableProducts() {
-        return productService.findAllAvailableProducts(1L);
+    public ResponseEntity<?> availableProducts(
+        @RequestParam(defaultValue = "0") 
+        @Min(value = 0, message = "The page number must be greater than or equal to 0")
+        int page,
+        @RequestParam(defaultValue = "5") 
+        @Min(value = 5, message = "The page size must be greater than or equal to 5")
+        int size
+    ) {
+        return ResponseEntity.ok(productService.findAllAvailableProducts(1L, page, size));
     }
 
     // To create an endpoint that allows invoking the method
     // findAllAvailableProductsByCategory.
     @GetMapping("/available/category/{category}")
-    public List<Product> availableProductsByCategory(@PathVariable String category) {
-        return productService.findAllAvailableProductsByCategory(1L, category);
+    public ResponseEntity<?> availableProductsByCategory(@PathVariable String category,
+        @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
+        @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
+    ) {
+        return ResponseEntity.ok(productService.findAllAvailableProductsByCategory(1L, category, page, size));
     }
 
     // To create an endpoint that allows invoking the method
     // findAllAvailableProductsByBrand.
     @GetMapping("/available/brand/{brand}")
-    public List<Product> availableProductsByBrand(@PathVariable String brand) {
-        return productService.findAllAvailableProductsByBrand(1L, brand);
+    public ResponseEntity<?> availableProductsByBrand(@PathVariable String brand,
+        @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
+        @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
+    ) {
+        return ResponseEntity.ok(productService.findAllAvailableProductsByBrand(1L, brand, page, size));
     }
 
 }

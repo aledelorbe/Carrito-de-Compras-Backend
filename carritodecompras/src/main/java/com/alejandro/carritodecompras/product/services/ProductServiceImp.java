@@ -1,7 +1,6 @@
 package com.alejandro.carritodecompras.product.services;
 
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,15 +118,19 @@ public class ProductServiceImp implements ProductService {
     // To get all the available products (with status 1) with certain category.
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAllAvailableProductsByCategory(Long status, String category) {
-        return repository.findByStatusAndCategory(status, category);
+    public PageResponseDto<Product> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findByStatusAndCategory(status, category, pageable);
+        return PageResponseDto.fromPage(pageResult);
     }
 
     // To get all the available products (with status 1) with certain brand.
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAllAvailableProductsByBrand(Long status, String brand) {
-        return repository.findByStatusAndBrand(status, brand);
+    public PageResponseDto<Product> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findByStatusAndBrand(status, brand, pageable);
+        return PageResponseDto.fromPage(pageResult);
     }
 
 }
