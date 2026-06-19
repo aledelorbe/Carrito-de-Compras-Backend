@@ -1,24 +1,34 @@
-package com.alejandro.carritodecompras.services;
+package com.alejandro.carritodecompras.user.services;
+
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.entities.PurchaseHistory;
-import com.alejandro.carritodecompras.entities.User;
-import com.alejandro.carritodecompras.repositories.UserRepository;
+import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.services.PurchaseHistoryService;
 import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
+import com.alejandro.carritodecompras.user.models.dtos.UserResponseDto;
+import com.alejandro.carritodecompras.user.models.entities.User;
+import com.alejandro.carritodecompras.user.models.projections.UserResponseProjection;
+import com.alejandro.carritodecompras.user.repositories.UserRepository;
 import com.alejandro.carritodecompras.utils.UtilDetail;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
 public class UserServiceImp implements UserService {
 
     // To inject the repository dependency.
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     // To inject the repository dependency.
     @Autowired
@@ -28,18 +38,28 @@ public class UserServiceImp implements UserService {
     // Methods for user entity
     // -----------------------------
 
-    // To list all of users (records) in the table 'users'
+    // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
+
+    // To list all of users (records) in the 'users' table 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return (List<User>) repository.findAll(); // cast because the method findAll returns an iterable.
+    public PageResponseDto<UserResponseProjection> findAllPerGroup(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<UserResponseProjection> pageResult = userRepository.getAllUsers(pageable);
+        return PageResponseDto.fromPage(pageResult);
     }
 
     // To get a specific user based on its id
     @Override
     @Transactional(readOnly = true)
     public Optional<User> findById(Long id) {
-        return repository.findById(id);
+        return userRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponseProjection> findTop10ByNameContainingIgnoreCase(String name){
+        return userRepository.findTop10ByNameContainingIgnoreCase(name);
     }
 
     // To save a new user in the db
@@ -47,15 +67,15 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User save(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     // To update a specific user based on its id
     @Override
     @Transactional
-    public Optional<User> update(Long id, User user) {
+    public Optional<UserResponseDto> update(Long id, User user) {
         // Find a specific user
-        Optional<User> optionalUser = repository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         // If the user is present then...
         if (optionalUser.isPresent()) {
@@ -65,25 +85,36 @@ public class UserServiceImp implements UserService {
             userDb.setName(user.getName());
             userDb.setLastname(user.getLastname());
 
-            return Optional.ofNullable(repository.save(userDb));
+            User newUserDb = userRepository.save(userDb);
+
+            return Optional.of(UserResponseDto.fromUser(newUserDb));
         }
 
-        return optionalUser;
+        return Optional.empty();
     }
 
     // To delete a specific user based on its id
     @Override
     @Transactional
-    public Optional<User> deleteById(Long id) {
+    public Optional<UserResponseDto> deleteById(Long id) {
         // Search a specific user
-        Optional<User> optionalUser = repository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         // If the user is present then delete that user
-        optionalUser.ifPresent(userDb -> {
-            repository.deleteById(id);
-        });
+        if (optionalUser.isPresent() ) {
+            userRepository.deleteById(id);
+            return Optional.of(UserResponseDto.fromUser(optionalUser.get()));
+        }
+        return Optional.empty();
+    }
 
-        return optionalUser;
+    // ENDPOINTS FOR THE OWNER -----------------------------
+
+    // To get a specific user based on its id
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<UserResponseProjection> findOwnerUserById(Long id) {
+        return userRepository.findOwnerUserById(id);
     }
 
     // -----------------------------
@@ -98,20 +129,21 @@ public class UserServiceImp implements UserService {
 
         userDb.getPurchases().add(purchaseDb);
 
-        return repository.save(userDb);
+        return userRepository.save(userDb);
     }
 
     // To get all the purchases of a certain user
     @Override
     @Transactional(readOnly = true)
     public List<PurchaseHistory> getPurchasesByUserId(Long userId) {
-        return repository.getPurchasesByUserId(userId);
+        return userRepository.getPurchasesByUserId(userId);
     }
 
     // To get all the details of a certain purchase of a certain user
     @Override
     @Transactional(readOnly = true)
     public List<DetailedPurchaseHistoryDto> getDetailsOfPurchaseByUserId(Long userId, Long purchaseId) {
-        return repository.getDetailsOfPurchaseByUserId(userId, purchaseId);
+        return userRepository.getDetailsOfPurchaseByUserId(userId, purchaseId);
     }
+    
 }

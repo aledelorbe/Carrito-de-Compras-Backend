@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
-import com.alejandro.carritodecompras.product.models.dtos.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
+import com.alejandro.carritodecompras.product.models.projections.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
 
 import org.springframework.data.domain.Page;
@@ -32,7 +32,7 @@ public class ProductServiceImp implements ProductService {
 
     // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
 
-    // To list all of products (records) in the table 'products'
+    // To list all of products (records) in the 'products' table 
     @Override
     @Transactional(readOnly = true)
     public PageResponseDto<Product> findAllPerGroup(int page, int pageSize) {

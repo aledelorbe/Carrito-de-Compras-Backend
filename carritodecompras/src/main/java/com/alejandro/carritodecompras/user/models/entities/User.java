@@ -1,9 +1,10 @@
-package com.alejandro.carritodecompras.entities;
+package com.alejandro.carritodecompras.user.models.entities;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.alejandro.carritodecompras.entities.PurchaseHistory;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+
 
 // To specific the name of the table in mysql
 // In mysql the name of this table is 'user' but in this project 
@@ -70,7 +72,7 @@ public class User {
         this.lastname = lastname;
     }
 
-    @JsonIgnore // To not send the information about 'purchases'
+    // @JsonIgnore // To not send the information about 'purchases'
     public List<PurchaseHistory> getPurchases() {
         return purchases;
     }
@@ -78,4 +80,5 @@ public class User {
     public void setPurchases(List<PurchaseHistory> purchases) {
         this.purchases = purchases;
     }
+
 }

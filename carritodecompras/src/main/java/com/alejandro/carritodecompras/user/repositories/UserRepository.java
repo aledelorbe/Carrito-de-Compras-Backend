@@ -1,15 +1,39 @@
-package com.alejandro.carritodecompras.repositories;
+package com.alejandro.carritodecompras.user.repositories;
+
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import com.alejandro.carritodecompras.entities.PurchaseHistory;
-import com.alejandro.carritodecompras.entities.User;
 import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
+import com.alejandro.carritodecompras.user.models.entities.User;
+import com.alejandro.carritodecompras.user.models.projections.UserResponseProjection;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    // To get all user
+    @Query(value = "SELECT id, name, lastname FROM user", nativeQuery = true)
+    Page<UserResponseProjection> getAllUsers(Pageable pageable);
+
+    // To get an specific user based on its id
+    @Query(value = """
+    SELECT
+        id_user AS id,
+        name,
+        lastname
+    FROM user
+    WHERE id_user = :id
+    """, nativeQuery = true)
+    Optional<UserResponseProjection> findOwnerUserById(Long id);
+
+    List<UserResponseProjection> findTop10ByNameContainingIgnoreCase(String name);
 
     // --------------------------------
     // Custom queries

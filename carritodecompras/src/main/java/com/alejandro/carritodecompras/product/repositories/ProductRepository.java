@@ -10,9 +10,9 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.alejandro.carritodecompras.product.models.dtos.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
+import com.alejandro.carritodecompras.product.models.projections.ProductSearchProjection;
 
 
 public interface ProductRepository extends JpaRepository<Product, Long> {

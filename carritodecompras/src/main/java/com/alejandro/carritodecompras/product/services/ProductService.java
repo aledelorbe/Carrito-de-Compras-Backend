@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
-import com.alejandro.carritodecompras.product.models.dtos.ProductSearchProjection;
 import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
+import com.alejandro.carritodecompras.product.models.projections.ProductSearchProjection;
 
 
 public interface ProductService {
