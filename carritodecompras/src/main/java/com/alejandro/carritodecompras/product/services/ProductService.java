@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 
 
@@ -34,10 +35,10 @@ public interface ProductService {
     // Methods for custom queries of product entity
     // -----------------------------
 
-    PageResponseDto<Product> findAllAvailableProducts(Long status, int page, int pageSize);
+    PageResponseDto<ProductUserResponseProjection> findAllAvailableProducts(Long status, int page, int pageSize);
 
-    PageResponseDto<Product> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize);
+    PageResponseDto<ProductUserResponseProjection> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize);
 
-    PageResponseDto<Product> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize);
+    PageResponseDto<ProductUserResponseProjection> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize);
     
 }

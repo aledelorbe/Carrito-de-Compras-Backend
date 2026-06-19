@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
+import com.alejandro.carritodecompras.product.models.dtos.ProductUserResponseProjection;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
 
@@ -108,28 +109,27 @@ public class ProductServiceImp implements ProductService {
     // To get all the available products (with status 1)
     @Override
     @Transactional(readOnly = true)
-    public PageResponseDto<Product> findAllAvailableProducts(Long status, int page, int pageSize) {
+    public PageResponseDto<ProductUserResponseProjection> findAllAvailableProducts(Long status, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Product> pageResult = repository.findByStatus(status, pageable);
-
+        Page<ProductUserResponseProjection> pageResult = repository.findByStatus(status, pageable);
         return PageResponseDto.fromPage(pageResult);
     }
 
     // To get all the available products (with status 1) with certain category.
     @Override
     @Transactional(readOnly = true)
-    public PageResponseDto<Product> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize) {
+    public PageResponseDto<ProductUserResponseProjection> findAllAvailableProductsByCategory(Long status, String category, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Product> pageResult = repository.findByStatusAndCategory(status, category, pageable);
+        Page<ProductUserResponseProjection> pageResult = repository.findByStatusAndCategory(status, category, pageable);
         return PageResponseDto.fromPage(pageResult);
     }
 
     // To get all the available products (with status 1) with certain brand.
     @Override
     @Transactional(readOnly = true)
-    public PageResponseDto<Product> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize) {
+    public PageResponseDto<ProductUserResponseProjection> findAllAvailableProductsByBrand(Long status, String brand, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Product> pageResult = repository.findByStatusAndBrand(status, brand, pageable);
+        Page<ProductUserResponseProjection> pageResult = repository.findByStatusAndBrand(status, brand, pageable);
         return PageResponseDto.fromPage(pageResult);
     }
 
