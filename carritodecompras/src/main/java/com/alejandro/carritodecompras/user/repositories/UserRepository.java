@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.alejandro.carritodecompras.entities.PurchaseHistory;
-import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
+import com.alejandro.carritodecompras.purchase.models.dtos.DetailedPurchaseHistoryDto;
+import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.user.models.entities.User;
 import com.alejandro.carritodecompras.user.models.projections.UserResponseProjection;
 

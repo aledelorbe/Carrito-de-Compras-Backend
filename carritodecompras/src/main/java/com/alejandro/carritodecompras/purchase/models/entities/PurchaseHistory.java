@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.entities;
+package com.alejandro.carritodecompras.purchase.models.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

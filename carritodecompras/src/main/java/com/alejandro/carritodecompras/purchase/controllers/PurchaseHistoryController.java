@@ -1,4 +1,5 @@
-package com.alejandro.carritodecompras.controllers;
+package com.alejandro.carritodecompras.purchase.controllers;
+
 
 import java.util.List;
 
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.entities.PurchaseHistory;
-import com.alejandro.carritodecompras.services.PurchaseHistoryService;
-import com.alejandro.carritodecompras.utils.UtilDetail;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
+import com.alejandro.carritodecompras.purchase.services.PurchaseHistoryService;
 import com.alejandro.carritodecompras.utils.UtilValidation;
 
 import jakarta.validation.Valid;
+
 
 @RestController // To create a api rest.
 @RequestMapping("/api/purchases") // To create a base path.
@@ -37,7 +39,7 @@ public class PurchaseHistoryController {
     // The annotation called 'RequestBody' allows receiving data of many products
     // This endpoint is only used to test the 'addPurchase' method ****
     @PostMapping("/many")
-    public ResponseEntity<?> savePurchase(@Valid @RequestBody List<UtilDetail> utilDetails, BindingResult result) {
+    public ResponseEntity<?> savePurchase(@Valid @RequestBody List<CartItemRequest> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
@@ -47,4 +49,5 @@ public class PurchaseHistoryController {
         PurchaseHistory newPurchaseHistory = service.addPurchase(utilDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPurchaseHistory);
     }
+    
 }

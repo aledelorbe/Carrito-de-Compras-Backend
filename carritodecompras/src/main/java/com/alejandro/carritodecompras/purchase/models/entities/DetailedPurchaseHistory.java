@@ -1,5 +1,7 @@
-package com.alejandro.carritodecompras.entities;
+package com.alejandro.carritodecompras.purchase.models.entities;
 
+
+import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -10,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 
 // To specific the name of the table in mysql
 // In mysql the name of this table is 'detailed_purchase_history' but in this project 

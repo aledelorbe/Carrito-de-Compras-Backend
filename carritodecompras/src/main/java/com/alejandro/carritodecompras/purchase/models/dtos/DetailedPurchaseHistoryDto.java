@@ -1,6 +1,6 @@
-package com.alejandro.carritodecompras.services.dto;
+package com.alejandro.carritodecompras.purchase.models.dtos;
 
-import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
+import com.alejandro.carritodecompras.purchase.models.entities.DetailedPurchaseHistory;
 
 // To create a view for the 'DetailedPurchaseHistory' objects
 // This view is used when a user requests to watch all the details of a certain purchase

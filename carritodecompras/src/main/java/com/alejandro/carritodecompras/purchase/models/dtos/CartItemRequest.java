@@ -1,10 +1,10 @@
-package com.alejandro.carritodecompras.utils;
+package com.alejandro.carritodecompras.purchase.models.dtos;
 
 import jakarta.validation.constraints.NotNull;
 
 // This class is used to create auxiliar objects
 // These objects are received of a shop cart (a purchase) with this structure
-public class UtilDetail {
+public class CartItemRequest {
 
     @NotNull // To obligate to this attribute not to empty
     private Long idProduct;

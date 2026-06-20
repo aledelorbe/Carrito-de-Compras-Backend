@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.repositories;
+package com.alejandro.carritodecompras.purchase.repositories;
 
 // import org.springframework.data.jpa.repository.Query;
 
@@ -6,7 +6,7 @@ package com.alejandro.carritodecompras.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.alejandro.carritodecompras.entities.PurchaseHistory;
+import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
 
 public interface PurchaseHistoryRepository extends CrudRepository<PurchaseHistory, Long>{
 

@@ -9,15 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alejandro.carritodecompras.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.product.models.dtos.PageResponseDto;
-import com.alejandro.carritodecompras.services.PurchaseHistoryService;
-import com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto;
 import com.alejandro.carritodecompras.user.models.dtos.UserResponseDto;
 import com.alejandro.carritodecompras.user.models.entities.User;
 import com.alejandro.carritodecompras.user.models.projections.UserResponseProjection;
 import com.alejandro.carritodecompras.user.repositories.UserRepository;
-import com.alejandro.carritodecompras.utils.UtilDetail;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +26,7 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // To inject the repository dependency.
-    @Autowired
-    private PurchaseHistoryService purchaseHistoryService;
+
 
     // -----------------------------
     // Methods for user entity
@@ -115,35 +109,6 @@ public class UserServiceImp implements UserService {
     @Transactional(readOnly = true)
     public Optional<UserResponseProjection> findOwnerUserById(Long id) {
         return userRepository.findOwnerUserById(id);
-    }
-
-    // -----------------------------
-    // Methods for purchase entity
-    // -----------------------------
-
-    // To add new purchase to user
-    @Override
-    @Transactional
-    public User addPurchaseToUser(User userDb, List<UtilDetail> utilDetails) {
-        PurchaseHistory purchaseDb = purchaseHistoryService.addPurchase(utilDetails);
-
-        userDb.getPurchases().add(purchaseDb);
-
-        return userRepository.save(userDb);
-    }
-
-    // To get all the purchases of a certain user
-    @Override
-    @Transactional(readOnly = true)
-    public List<PurchaseHistory> getPurchasesByUserId(Long userId) {
-        return userRepository.getPurchasesByUserId(userId);
-    }
-
-    // To get all the details of a certain purchase of a certain user
-    @Override
-    @Transactional(readOnly = true)
-    public List<DetailedPurchaseHistoryDto> getDetailsOfPurchaseByUserId(Long userId, Long purchaseId) {
-        return userRepository.getDetailsOfPurchaseByUserId(userId, purchaseId);
     }
     
 }

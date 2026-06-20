@@ -4,7 +4,7 @@ package com.alejandro.carritodecompras.user.models.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alejandro.carritodecompras.entities.PurchaseHistory;
+import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

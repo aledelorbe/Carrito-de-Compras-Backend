@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.entities;
+package com.alejandro.carritodecompras.common.models;
 
 import java.time.LocalDateTime;
 

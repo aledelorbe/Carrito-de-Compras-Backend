@@ -1,4 +1,5 @@
-package com.alejandro.carritodecompras.services;
+package com.alejandro.carritodecompras.purchase.services;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alejandro.carritodecompras.entities.DetailedPurchaseHistory;
-import com.alejandro.carritodecompras.entities.Product;
-import com.alejandro.carritodecompras.repositories.DetailedPurchaseHistoryRepository;
-import com.alejandro.carritodecompras.repositories.ProductRepository;
-import com.alejandro.carritodecompras.utils.UtilDetail;
+import com.alejandro.carritodecompras.product.models.entities.Product;
+import com.alejandro.carritodecompras.product.repositories.ProductRepository;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.entities.DetailedPurchaseHistory;
+import com.alejandro.carritodecompras.purchase.repositories.DetailedPurchaseHistoryRepository;
+
 
 @Service
 public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistoryService {
@@ -33,7 +35,7 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of this object with the product record.
     @Override
     @Transactional
-    public DetailedPurchaseHistory addDetailPurchase(UtilDetail utilDetail) {
+    public DetailedPurchaseHistory addDetailPurchase(CartItemRequest utilDetail) {
         // Search for a product.
         DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
         Optional<Product> optionalProduct = productRepository.findById(utilDetail.getIdProduct());
@@ -55,11 +57,11 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of these objects with each product record.
     @Override
     @Transactional
-    public List<DetailedPurchaseHistory> addDetailsPurchase(List<UtilDetail> utilDetails) {
+    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequest> utilDetails) {
 
         List<DetailedPurchaseHistory> details = new ArrayList<>();
 
-        for (UtilDetail util : utilDetails) {
+        for (CartItemRequest util : utilDetails) {
 
             // Search for a product.
             DetailedPurchaseHistory detail = new DetailedPurchaseHistory();

@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.enums;
+package com.alejandro.carritodecompras.purchase.enums;
 
 public enum OrderStatus { 
     PAYMENT_PENDING, 

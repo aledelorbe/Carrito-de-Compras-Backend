@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.controllers;
+package com.alejandro.carritodecompras.common.controllers;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.alejandro.carritodecompras.entities.ErrorMessage;
+import com.alejandro.carritodecompras.common.models.ErrorMessage;
 
 // This class is used to handle when an exception is fired 
 @RestControllerAdvice
