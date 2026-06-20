@@ -18,9 +18,18 @@ import com.alejandro.carritodecompras.product.models.projections.ProductSearchPr
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // --------------------------------
-    // Custom queries
-    // --------------------------------
+    // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
+
+    // To get all the products with certain category
+    Page<Product> findByCategory(String category, Pageable pageable);
+
+    // To get all the products with certain brand
+    Page<Product> findByBrand(String brand, Pageable pageable);
+
+    List<Product> findTop10ByNameContainingIgnoreCase(String name);
+
+
+    // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
 
     @Query(value = """
     SELECT

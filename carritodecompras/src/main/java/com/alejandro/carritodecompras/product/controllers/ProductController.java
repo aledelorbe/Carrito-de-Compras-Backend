@@ -40,14 +40,11 @@ public class ProductController {
     @Autowired
     private UtilValidation utilValidation;
 
-    // -----------------------------
-    // Methods for product entity
-    // -----------------------------
 
     // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
 
     // To create an endpoint that allows invoking the findAllPerGroup method.
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public ResponseEntity<?> getAllProducts(
         @RequestParam(defaultValue = "0") 
         @Min(value = 0, message = "The page number must be greater than or equal to 0")
@@ -60,7 +57,7 @@ public class ProductController {
     }
 
     // To create an endpoint that allows invoking the findById method.
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public ResponseEntity<?> product(@PathVariable Long id) {
         // Search a specific product and if it's present then return it.
         Optional<Product> optionalProduct = productService.findById(id);
@@ -74,7 +71,7 @@ public class ProductController {
     
     // To create an endpoint that allows invoking the save method.
     // The annotation called 'RequestBody' allows receiving data of a product
-    @PostMapping()
+    @PostMapping("/admin")
     public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
@@ -89,7 +86,7 @@ public class ProductController {
     
     // To create an endpoint that allows update all of atributte values a specific
     // product based its id.
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result,
     @PathVariable Long id) {
         // To handle of obligations of object attributes
@@ -109,7 +106,7 @@ public class ProductController {
 
     // To create an endpoint that allows setting a status value for a specific
     // product based its id.
-    @PatchMapping("/{id}")
+    @PatchMapping("/admin/{id}")
     public ResponseEntity<?> updateStatusProduct(@PathVariable Long id) {
         // Find specific product and if it's present then return specific product
         Optional<Product> optionalProduct = productService.updateStatusByProductId(id);
@@ -119,6 +116,21 @@ public class ProductController {
         }
         // Else return code response 404
         return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows invoking the findAllProductsByCategory method.
+    @GetMapping("/admin/category/{category}")
+    public ResponseEntity<?> getProductsByCategory(@PathVariable String category,
+        @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
+        @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
+    ) {
+        return ResponseEntity.ok(productService.findAllProductsByCategory(category, page, size));
+    }
+
+    // To create an endpoint that allows invoking the findTop10ByNameContainingIgnoreCase method.
+    @GetMapping("/admin/name/{name}")
+    public ResponseEntity<?> getProductByName(@PathVariable String name) {
+        return ResponseEntity.ok(productService.findTop10ByNameContainingIgnoreCase(name));
     }
 
     // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
@@ -136,19 +148,15 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows invoking the findByName method.
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> productByName(@PathVariable String name) {
+    // To create an endpoint that allows invoking the findTop10ByStatusAndNameContainingIgnoreCase method.
+    @GetMapping("/public/name/{name}")
+    public ResponseEntity<?> getProductByNameAndStatus(@PathVariable String name) {
         return ResponseEntity.ok(productService.findTop10ByStatusAndNameContainingIgnoreCase(1L, name));
     }
 
-    // -----------------------------
-    // Methods for custom queries of product entity
-    // -----------------------------
-
     // To create an endpoint that allows invoking the method
     // findAllAvailableProducts.
-    @GetMapping("/available")
+    @GetMapping("/public/available")
     public ResponseEntity<?> availableProducts(
         @RequestParam(defaultValue = "0") 
         @Min(value = 0, message = "The page number must be greater than or equal to 0")
@@ -160,10 +168,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAllAvailableProducts(1L, page, size));
     }
 
-    // To create an endpoint that allows invoking the method
-    // findAllAvailableProductsByCategory.
-    @GetMapping("/available/category/{category}")
-    public ResponseEntity<?> availableProductsByCategory(@PathVariable String category,
+    // To create an endpoint that allows invoking the 
+    // findAllAvailableProductsByCategory method.
+    @GetMapping("/public/available/category/{category}")
+    public ResponseEntity<?> getAvailableProductsByCategory(@PathVariable String category,
         @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
         @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
     ) {
@@ -172,7 +180,7 @@ public class ProductController {
 
     // To create an endpoint that allows invoking the method
     // findAllAvailableProductsByBrand.
-    @GetMapping("/available/brand/{brand}")
+    @GetMapping("/public/available/brand/{brand}")
     public ResponseEntity<?> availableProductsByBrand(@PathVariable String brand,
         @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
         @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size

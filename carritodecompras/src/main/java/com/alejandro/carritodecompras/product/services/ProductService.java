@@ -14,10 +14,6 @@ public interface ProductService {
 
     // Declaration of methods to use in 'serviceImp' file
 
-    // -----------------------------
-    // Methods for product entity
-    // -----------------------------
-
     // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
 
     PageResponseDto<Product> findAllPerGroup(int page, int pageSize);
@@ -30,15 +26,18 @@ public interface ProductService {
 
     Optional<Product> updateStatusByProductId(Long id);
 
+    PageResponseDto<Product> findAllProductsByCategory(String category, int page, int pageSize);
+
+    PageResponseDto<Product> findAllProductsByBrand(String brand, int page, int pageSize);
+
+    List<Product> findTop10ByNameContainingIgnoreCase(String name);
+
+
     // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
 
     Optional<ProductUserResponseProjection> findPublicProductById(Long id);
     
     List<ProductSearchProjection> findTop10ByStatusAndNameContainingIgnoreCase(Long status, String name);
-
-    // -----------------------------
-    // Methods for custom queries of product entity
-    // -----------------------------
 
     PageResponseDto<ProductUserResponseProjection> findAllAvailableProducts(Long status, int page, int pageSize);
 

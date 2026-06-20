@@ -26,9 +26,6 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private ProductRepository repository;
 
-    // -----------------------------
-    // Methods for product entity
-    // -----------------------------
 
     // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
 
@@ -102,6 +99,31 @@ public class ProductServiceImp implements ProductService {
         return optionalProduct;
     }
 
+    // To get all the products with certain category.
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDto<Product> findAllProductsByCategory(String category, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findByCategory(category, pageable);
+        return PageResponseDto.fromPage(pageResult);
+    }
+
+    // To get all the products with certain brand.
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDto<Product> findAllProductsByBrand(String brand, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Product> pageResult = repository.findByBrand(brand, pageable);
+        return PageResponseDto.fromPage(pageResult);
+    }
+
+    // To get all the products with a name that contains a specific string, ignoring case sensitivity.
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findTop10ByNameContainingIgnoreCase(String name){
+        return repository.findTop10ByNameContainingIgnoreCase(name);
+    }
+
     // ENDPOINTS FOR THE PUBLIC ROLE -----------------------------
 
     // To get a specific product based on its id
@@ -110,10 +132,6 @@ public class ProductServiceImp implements ProductService {
     public Optional<ProductUserResponseProjection> findPublicProductById(Long id) {
         return repository.findPublicProductById(id);
     }
-
-    // -----------------------------
-    // Methods for custom queries of product entity
-    // -----------------------------
 
     // To get all the available products (with status 1) with a name that contains a specific string, ignoring case sensitivity.
     @Override
