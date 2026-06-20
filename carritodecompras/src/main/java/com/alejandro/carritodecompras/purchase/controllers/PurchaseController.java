@@ -74,7 +74,7 @@ public class PurchaseController {
 
         if (cartItemRequestDto == null || cartItemRequestDto.isEmpty()) {
             java.util.Map<String, String> errors = new java.util.HashMap<>();
-            errors.put("cart", "El carrito de compras no puede estar vacío.");
+            errors.put("cart", "The cart cannot be null or empty.");
             return ResponseEntity.badRequest().body(errors);
         }
 
@@ -82,16 +82,16 @@ public class PurchaseController {
         for (int i = 0; i < cartItemRequestDto.size(); i++) {
             CartItemRequestDto item = cartItemRequestDto.get(i);
             if (item == null) {
-                validationErrors.put("items[" + i + "]", "El item no puede ser nulo.");
+                validationErrors.put("items[" + i + "]", "The item cannot be null.");
                 continue;
             }
             if (item.getIdProduct() == null) {
-                validationErrors.put("items[" + i + "].idProduct", "El campo idProduct no puede ser nulo.");
+                validationErrors.put("items[" + i + "].idProduct", "the field idProduct cannot be null.");
             }
             if (item.getQuantity() == null) {
-                validationErrors.put("items[" + i + "].quantity", "El campo quantity no puede ser nulo.");
+                validationErrors.put("items[" + i + "].quantity", "the field quantity cannot be null.");
             } else if (item.getQuantity() <= 0) {
-                validationErrors.put("items[" + i + "].quantity", "El campo quantity debe ser mayor que 0.");
+                validationErrors.put("items[" + i + "].quantity", "the field quantity must be greater than 0.");
             }
         }
 

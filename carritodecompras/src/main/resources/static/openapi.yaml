@@ -1,0 +1,967 @@
+openapi: 3.0.3
+
+info:
+  title: Shopping Cart API
+  description: API for managing a shopping cart system including products, users, purchases, and detailed purchase history.
+  version: v1.0.0
+  contact:
+    name: Alejandro Granados
+    email: alejandro.magb@gmail.com
+    url: https://github.com/aledelorbe
+
+tags:
+  - name: Products
+    description: Endpoints related to product management.
+  - name: Users
+    description: Endpoints related to user management.
+  - name: Purchases
+    description: Endpoints related to purchase processing.
+  - name: Details
+    description: Endpoints related to detailed purchase history.
+
+paths:
+
+  # Product controller -----------------------------
+
+  /api/products/all:
+    get:
+      tags:
+        - Products
+      summary: Get all products
+      description: Returns a paginated list of all products.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          description: The page number (zero-based).
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            minimum: 5
+          description: The page size (minimum 5).
+      responses:
+        '200':
+          description: List of products successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseProduct'
+
+  /api/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by ID
+      description: Returns a specific product by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The product ID
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+
+    put:
+      tags:
+        - Products
+      summary: Update a product
+      description: Updates all fields of an existing product by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The product ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+        '404':
+          description: Product not found
+
+    patch:
+      tags:
+        - Products
+      summary: Toggle product status
+      description: Inverts the status of a specific product (e.g. active/inactive).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The product ID
+      responses:
+        '200':
+          description: Status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+
+  /api/products:
+    post:
+      tags:
+        - Products
+      summary: Create a product
+      description: Creates a new product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+
+  /api/products/public/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get public product details
+      description: Returns public properties of a product by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The product ID
+      responses:
+        '200':
+          description: Product details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductUserResponseProjection'
+        '404':
+          description: Product not found
+
+  /api/products/name/{name}:
+    get:
+      tags:
+        - Products
+      summary: Search products by name
+      description: Finds the top 10 active products whose name contains the specified string (case-insensitive).
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name snippet to search
+      responses:
+        '200':
+          description: List of matching products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductSearchProjection'
+
+  /api/products/available:
+    get:
+      tags:
+        - Products
+      summary: Get available products
+      description: Returns a paginated list of all products currently available (status = 1).
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            minimum: 5
+      responses:
+        '200':
+          description: Paginated list of available products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseProductUserResponse'
+
+  /api/products/available/category/{category}:
+    get:
+      tags:
+        - Products
+      summary: Get available products by category
+      description: Returns a paginated list of available products filtered by category name.
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The category name
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            minimum: 5
+      responses:
+        '200':
+          description: Paginated list of available products in category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseProductUserResponse'
+
+  /api/products/available/brand/{brand}:
+    get:
+      tags:
+        - Products
+      summary: Get available products by brand
+      description: Returns a paginated list of available products filtered by brand name.
+      parameters:
+        - name: brand
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The brand name
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            minimum: 5
+      responses:
+        '200':
+          description: Paginated list of available products for brand
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseProductUserResponse'
+
+  # User controller -----------------------------
+
+  /api/users/all:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Returns a paginated list of users (showing brief user projections).
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            minimum: 5
+      responses:
+        '200':
+          description: Paginated list of user projections
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseUserResponseProjection'
+
+  /api/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Returns a full user record including purchase history details.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The user ID
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+    put:
+      tags:
+        - Users
+      summary: Update an existing user
+      description: Updates name and lastname of a specific user.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+        '404':
+          description: User not found
+        '409':
+          description: Username/lastname combination already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+    delete:
+      tags:
+        - Users
+      summary: Delete a user
+      description: Deletes a user by their ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The user ID
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+        '404':
+          description: User not found
+
+  /api/users/name/{name}:
+    get:
+      tags:
+        - Users
+      summary: Search users by name
+      description: Finds the top 10 users whose name contains the specified string (case-insensitive).
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user name snippet
+      responses:
+        '200':
+          description: List of matching users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponseProjection'
+
+  /api/users:
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      description: Registers a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+  /api/users/owner/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get owner user details
+      description: Returns brief owner user details.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The user ID
+      responses:
+        '200':
+          description: User profile found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseProjection'
+        '404':
+          description: User not found
+
+  # Purchase controller -----------------------------
+
+  /api/purchases/{userId}/purchases:
+    get:
+      tags:
+        - Purchases
+      summary: Get purchases by User ID
+      description: Returns the history of purchases for a specific user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the user
+      responses:
+        '200':
+          description: Purchase history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PurchaseHistory'
+        '404':
+          description: User not found
+
+  /api/purchases/{userId}/purchase:
+    post:
+      tags:
+        - Purchases
+      summary: Make a purchase
+      description: Creates a new purchase for the user from items in their shopping cart. Adjusts product stocks.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItemRequestDto'
+      responses:
+        '201':
+          description: Purchase completed successfully. Returns the updated User object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Validation errors (e.g. out of stock, empty cart, invalid quantity)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+        '404':
+          description: User or Product not found
+
+  /api/purchases/{userId}/purchases/{purchaseId}:
+    get:
+      tags:
+        - Purchases
+      summary: Get purchase details
+      description: Returns the items and details of a specific purchase for a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the user
+        - name: purchaseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the purchase record
+      responses:
+        '200':
+          description: Detailed purchase records retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DetailedPurchaseHistoryDto'
+        '404':
+          description: User not found
+
+  # Detail controller -----------------------------
+
+  /api/details:
+    post:
+      tags:
+        - Details
+      summary: Add a detailed purchase item (Test endpoint)
+      description: Creates a single detailed purchase record. Used for testing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemRequestDto'
+      responses:
+        '201':
+          description: Detailed purchase history created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedPurchaseHistory'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+
+  /api/details/many:
+    post:
+      tags:
+        - Details
+      summary: Add multiple detailed purchase items (Test endpoint)
+      description: Creates multiple detailed purchase records. Used for testing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItemRequestDto'
+      responses:
+        '201':
+          description: Detailed purchase histories created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DetailedPurchaseHistory'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - description
+        - brand
+        - category
+        - price
+        - stock
+        - image
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Wireless Headphones"
+        description:
+          type: string
+          example: "Active noise-cancelling Bluetooth headphones."
+        brand:
+          type: string
+          example: "Sony"
+        category:
+          type: string
+          example: "Electronics"
+        price:
+          type: number
+          format: double
+          example: 199.99
+        stock:
+          type: integer
+          format: int64
+          example: 50
+        image:
+          type: string
+          example: "https://example.com/images/headphones.jpg"
+        status:
+          type: integer
+          format: int64
+          example: 1
+
+    ProductUserResponseProjection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Wireless Headphones"
+        description:
+          type: string
+          example: "Active noise-cancelling Bluetooth headphones."
+        brand:
+          type: string
+          example: "Sony"
+        category:
+          type: string
+          example: "Electronics"
+        price:
+          type: number
+          format: double
+          example: 199.99
+        image:
+          type: string
+          example: "https://example.com/images/headphones.jpg"
+
+    ProductSearchProjection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Wireless Headphones"
+        image:
+          type: string
+          example: "https://example.com/images/headphones.jpg"
+
+    User:
+      type: object
+      required:
+        - name
+        - lastname
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "John"
+        lastname:
+          type: string
+          example: "Doe"
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseHistory'
+
+    UserResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "John"
+        lastname:
+          type: string
+          example: "Doe"
+
+    UserResponseProjection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "John"
+        lastname:
+          type: string
+          example: "Doe"
+
+    PurchaseHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        firstImage:
+          type: string
+          example: "https://example.com/images/headphones.jpg"
+        total:
+          type: number
+          format: double
+          example: 399.98
+        date:
+          type: string
+          format: date
+          example: "2026-06-20"
+
+    DetailedPurchaseHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        quantity:
+          type: integer
+          format: int64
+          example: 2
+        total:
+          type: number
+          format: double
+          example: 399.98
+
+    DetailedPurchaseHistoryDto:
+      type: object
+      properties:
+        detail:
+          $ref: '#/components/schemas/DetailedPurchaseHistory'
+        name:
+          type: string
+          example: "Wireless Headphones"
+        image:
+          type: string
+          example: "https://example.com/images/headphones.jpg"
+
+    CartItemRequestDto:
+      type: object
+      required:
+        - idProduct
+        - quantity
+      properties:
+        idProduct:
+          type: integer
+          format: int64
+          example: 1
+        quantity:
+          type: integer
+          format: int64
+          example: 2
+
+    PageResponseProduct:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        currentPage:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 5
+        totalElements:
+          type: integer
+          format: int64
+          example: 23
+        totalPages:
+          type: integer
+          example: 5
+        hasNext:
+          type: boolean
+          example: true
+        hasPrevious:
+          type: boolean
+          example: false
+
+    PageResponseProductUserResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductUserResponseProjection'
+        currentPage:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 5
+        totalElements:
+          type: integer
+          format: int64
+          example: 15
+        totalPages:
+          type: integer
+          example: 3
+        hasNext:
+          type: boolean
+          example: true
+        hasPrevious:
+          type: boolean
+          example: false
+
+    PageResponseUserResponseProjection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseProjection'
+        currentPage:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 5
+        totalElements:
+          type: integer
+          format: int64
+          example: 45
+        totalPages:
+          type: integer
+          example: 9
+        hasNext:
+          type: boolean
+          example: true
+        hasPrevious:
+          type: boolean
+          example: false
+
+    ValidationErrors:
+      type: object
+      description: Validation error messages indexed by field name.
+      additionalProperties:
+        type: string
+      example:
+        name: "El campo name debe ser obligatorio"
+
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error! The user you want to register already exists in the database."
+        error:
+          type: string
+          example: "Conflict"
+        status:
+          type: integer
+          example: 409
+        dateTime:
+          type: string
+          format: date-time
+          example: "2026-06-20T12:00:00"

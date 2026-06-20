@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.common.models;
+package com.alejandro.carritodecompras.exceptions;
 
 import java.time.LocalDateTime;
 

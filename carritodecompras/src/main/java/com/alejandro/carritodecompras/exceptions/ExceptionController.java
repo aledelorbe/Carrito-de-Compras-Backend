@@ -1,4 +1,4 @@
-package com.alejandro.carritodecompras.common.controllers;
+package com.alejandro.carritodecompras.exceptions;
 
 import java.time.LocalDateTime;
 
@@ -7,10 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.alejandro.carritodecompras.common.models.ErrorMessage;
-import com.alejandro.carritodecompras.exceptions.NoStockException;
-import com.alejandro.carritodecompras.exceptions.ResourceNotFoundException;
 
 // This class is used to handle when an exception is fired 
 @RestControllerAdvice
@@ -23,9 +19,9 @@ public class ExceptionController {
 
         // To know if this exception is fired by an update or create action.
         if ( e.getMessage().contains("insert")) {
-            errorMessage = "Error! El usuario que se desea registrar ya se encuentra en la base de datos.";
+            errorMessage = "Error! The user you want to register already exists in the database.";
         } else {
-            errorMessage = "Error! Este nombre de usuario al cual se desea actualizar ya lo posee otro usuario.";
+            errorMessage = "Error! The username you want to update is already taken by another user.";
         }
 
         ErrorMessage error = new ErrorMessage();
@@ -41,7 +37,7 @@ public class ExceptionController {
     public ResponseEntity<ErrorMessage> handleResourceNotFound(ResourceNotFoundException e) {
         ErrorMessage error = new ErrorMessage();
         error.setDateTime(LocalDateTime.now());
-        error.setError("Recurso no encontrado");
+        error.setError("Resource not found");
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.NOT_FOUND.value());
 
@@ -52,10 +48,11 @@ public class ExceptionController {
     public ResponseEntity<ErrorMessage> handleNoStock(NoStockException e) {
         ErrorMessage error = new ErrorMessage();
         error.setDateTime(LocalDateTime.now());
-        error.setError("Sin stock disponible");
+        error.setError("There aren't enough stock for this product");
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+    
 }

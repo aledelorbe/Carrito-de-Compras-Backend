@@ -37,7 +37,7 @@ public class PurchaseServiceImp implements PurchaseService {
     @Transactional
     public User addPurchaseToUser(Long userId, List<CartItemRequestDto> cartItemRequestDtos) {
         User userDb = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("El usuario con ID " + userId + " no existe."));
+                .orElseThrow(() -> new ResourceNotFoundException("The user with ID " + userId + " does not exist."));
 
         PurchaseHistory purchaseDb = purchaseHistoryService.addPurchase(cartItemRequestDtos);
         userDb.getPurchases().add(purchaseDb);

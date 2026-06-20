@@ -51,7 +51,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
         for(CartItemRequestDto cartItem : sortedItems) {
 
             if (!productRepository.existsById(cartItem.getIdProduct())) {
-                throw new ResourceNotFoundException("El producto con ID " + cartItem.getIdProduct() + " no existe.");
+                throw new ResourceNotFoundException("The product with ID " + cartItem.getIdProduct() + " does not exist.");
             }
 
             int rowsAffected = productRepository.decreaseStock(cartItem.getIdProduct(), cartItem.getQuantity());
