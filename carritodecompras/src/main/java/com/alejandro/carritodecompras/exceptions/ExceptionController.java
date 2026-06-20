@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 // This class is used to handle when an exception is fired 
 @RestControllerAdvice
@@ -49,6 +50,18 @@ public class ExceptionController {
         ErrorMessage error = new ErrorMessage();
         error.setDateTime(LocalDateTime.now());
         error.setError("There aren't enough stock for this product");
+        error.setMessage(e.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> handleInvalidEnum(MethodArgumentTypeMismatchException e) {
+
+        ErrorMessage error = new ErrorMessage();
+        error.setDateTime(LocalDateTime.now());
+        error.setError("Invalid value in the request parameter");
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
 

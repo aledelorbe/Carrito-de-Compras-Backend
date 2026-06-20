@@ -74,10 +74,13 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
   - Se debe comprobar que, cuando se elimina un usuario, se elimine en cascada toda su información.
 
+- Desarrollar pruebas unitarias
+- Desarrollar pruebas de integracion
+- Dockerizar la app.
+- Agregar redis a los catalogos
+- kubernitizar la app.
 - Desplegar el proyecto en AWS.
 - Integrar jenkins
-
-
 
 ## Demo
 

@@ -56,13 +56,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // To get all the available products (with status 1) with certain brand
     Page<ProductUserResponseProjection> findByStatusAndBrand(Long status, String brand, Pageable pageable);
 
+    // To decrease the stock of a product and set it as unavailable if the stock is 0
     @Modifying
     @Query("""
         UPDATE Product p
-        SET p.stock = p.stock - :quantity
+        SET p.stock = p.stock - :quantity,
+            p.available =
+                CASE
+                    WHEN p.stock - :quantity = 0 THEN 0
+                    ELSE p.available
+                END
         WHERE p.id = :id
         AND p.stock >= :quantity
     """)
-    int decreaseStock(Long id, Long quantity);
+    int decreaseStockAndSetUnavailable(Long id, Long quantity);
     
 }
