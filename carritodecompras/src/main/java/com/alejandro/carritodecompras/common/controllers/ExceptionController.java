@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.alejandro.carritodecompras.common.models.ErrorMessage;
+import com.alejandro.carritodecompras.exceptions.NoStockException;
+import com.alejandro.carritodecompras.exceptions.ResourceNotFoundException;
 
 // This class is used to handle when an exception is fired 
 @RestControllerAdvice
@@ -32,6 +34,28 @@ public class ExceptionController {
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.CONFLICT.value());
 
-        return ResponseEntity.internalServerError().body(error);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler({ ResourceNotFoundException.class })
+    public ResponseEntity<ErrorMessage> handleResourceNotFound(ResourceNotFoundException e) {
+        ErrorMessage error = new ErrorMessage();
+        error.setDateTime(LocalDateTime.now());
+        error.setError("Recurso no encontrado");
+        error.setMessage(e.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler({ NoStockException.class })
+    public ResponseEntity<ErrorMessage> handleNoStock(NoStockException e) {
+        ErrorMessage error = new ErrorMessage();
+        error.setDateTime(LocalDateTime.now());
+        error.setError("Sin stock disponible");
+        error.setMessage(e.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }

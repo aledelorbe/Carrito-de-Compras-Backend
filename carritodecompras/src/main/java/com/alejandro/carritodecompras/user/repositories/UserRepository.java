@@ -45,7 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // To get all the details of a certain purchase of a certain user
     @Query("""
-        SELECT new com.alejandro.carritodecompras.services.dto.DetailedPurchaseHistoryDto(d, pro.name, pro.image) 
+        SELECT new com.alejandro.carritodecompras.purchase.models.dtos.DetailedPurchaseHistoryDto(d, pro.name, pro.image) 
         FROM User u 
         INNER JOIN u.purchases p 
         INNER JOIN p.details d 

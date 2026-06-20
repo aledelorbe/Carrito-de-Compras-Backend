@@ -4,8 +4,10 @@ package com.alejandro.carritodecompras.purchase.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alejandro.carritodecompras.exceptions.ResourceNotFoundException;
 import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.models.dtos.DetailedPurchaseHistoryDto;
 import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
@@ -13,6 +15,7 @@ import com.alejandro.carritodecompras.user.models.entities.User;
 import com.alejandro.carritodecompras.user.repositories.UserRepository;
 
 
+@Service
 public class PurchaseServiceImp implements PurchaseService {
 
     // To inject the repository dependency.
@@ -33,9 +36,10 @@ public class PurchaseServiceImp implements PurchaseService {
     @Override
     @Transactional
     public User addPurchaseToUser(Long userId, List<CartItemRequestDto> cartItemRequestDtos) {
-        PurchaseHistory purchaseDb = purchaseHistoryService.addPurchase(cartItemRequestDtos);
+        User userDb = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario con ID " + userId + " no existe."));
 
-        User userDb = userRepository.findById(userId).orElse(null);
+        PurchaseHistory purchaseDb = purchaseHistoryService.addPurchase(cartItemRequestDtos);
         userDb.getPurchases().add(purchaseDb);
 
         return userRepository.save(userDb);

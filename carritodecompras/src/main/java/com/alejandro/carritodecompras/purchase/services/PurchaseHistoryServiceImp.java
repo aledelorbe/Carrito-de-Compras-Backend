@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.exceptions.NoStockException;
+import com.alejandro.carritodecompras.exceptions.ResourceNotFoundException;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
 import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
@@ -48,6 +49,10 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
 
         List<CartItemRequestDto> sortedItems = cartItemRequestDtos.stream().sorted(Comparator.comparing(CartItemRequestDto::getIdProduct)).toList();
         for(CartItemRequestDto cartItem : sortedItems) {
+
+            if (!productRepository.existsById(cartItem.getIdProduct())) {
+                throw new ResourceNotFoundException("El producto con ID " + cartItem.getIdProduct() + " no existe.");
+            }
 
             int rowsAffected = productRepository.decreaseStock(cartItem.getIdProduct(), cartItem.getQuantity());
 

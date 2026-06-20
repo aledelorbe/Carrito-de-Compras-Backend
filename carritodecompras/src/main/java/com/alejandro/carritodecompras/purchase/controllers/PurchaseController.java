@@ -72,6 +72,33 @@ public class PurchaseController {
             return utilValidation.validation(result);
         }
 
+        if (cartItemRequestDto == null || cartItemRequestDto.isEmpty()) {
+            java.util.Map<String, String> errors = new java.util.HashMap<>();
+            errors.put("cart", "El carrito de compras no puede estar vacío.");
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        java.util.Map<String, String> validationErrors = new java.util.HashMap<>();
+        for (int i = 0; i < cartItemRequestDto.size(); i++) {
+            CartItemRequestDto item = cartItemRequestDto.get(i);
+            if (item == null) {
+                validationErrors.put("items[" + i + "]", "El item no puede ser nulo.");
+                continue;
+            }
+            if (item.getIdProduct() == null) {
+                validationErrors.put("items[" + i + "].idProduct", "El campo idProduct no puede ser nulo.");
+            }
+            if (item.getQuantity() == null) {
+                validationErrors.put("items[" + i + "].quantity", "El campo quantity no puede ser nulo.");
+            } else if (item.getQuantity() <= 0) {
+                validationErrors.put("items[" + i + "].quantity", "El campo quantity debe ser mayor que 0.");
+            }
+        }
+
+        if (!validationErrors.isEmpty()) {
+            return ResponseEntity.badRequest().body(validationErrors);
+        }
+
         User newUser = purchaseService.addPurchaseToUser(userId, cartItemRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }

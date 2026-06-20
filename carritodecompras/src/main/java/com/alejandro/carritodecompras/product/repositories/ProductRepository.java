@@ -52,7 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         UPDATE Product p
         SET p.stock = p.stock - :quantity
         WHERE p.id = :id
-        AND p.stock > 0
+        AND p.stock >= :quantity
     """)
     int decreaseStock(Long id, Long quantity);
     
