@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.models.entities.DetailedPurchaseHistory;
 import com.alejandro.carritodecompras.purchase.services.DetailedPurchaseHistoryService;
 import com.alejandro.carritodecompras.utils.UtilValidation;
@@ -37,7 +37,7 @@ public class DetailedPurchaseHistoryController {
     // The annotation called 'RequestBody' allows receiving data of a product
     // This endpoint is only used to test the 'addDetailPurchase' method ****
     @PostMapping()
-    public ResponseEntity<?> saveDetailPurchase(@Valid @RequestBody CartItemRequest utilDetail, BindingResult result) {
+    public ResponseEntity<?> saveDetailPurchase(@Valid @RequestBody CartItemRequestDto utilDetail, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);
@@ -52,7 +52,7 @@ public class DetailedPurchaseHistoryController {
     // The annotation called 'RequestBody' allows receiving data of many products
     // This endpoint is only used to test the 'addDetailsPurchase' method ****
     @PostMapping("/many")
-    public ResponseEntity<?> saveDetailsPurchase(@Valid @RequestBody List<CartItemRequest> utilDetails, BindingResult result) {
+    public ResponseEntity<?> saveDetailsPurchase(@Valid @RequestBody List<CartItemRequestDto> utilDetails, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
             return utilValidation.validation(result);

@@ -2,6 +2,7 @@ package com.alejandro.carritodecompras.product.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -46,4 +47,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // To get all the available products (with status 1) with certain brand
     Page<ProductUserResponseProjection> findByStatusAndBrand(Long status, String brand, Pageable pageable);
 
+    @Modifying
+    @Query("""
+        UPDATE Product p
+        SET p.stock = p.stock - :quantity
+        WHERE p.id = :id
+        AND p.stock > 0
+    """)
+    int decreaseStock(Long id, Long quantity);
+    
 }

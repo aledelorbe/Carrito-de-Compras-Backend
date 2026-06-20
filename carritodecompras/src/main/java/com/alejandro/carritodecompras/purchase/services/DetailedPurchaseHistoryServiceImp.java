@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
-import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.models.entities.DetailedPurchaseHistory;
 import com.alejandro.carritodecompras.purchase.repositories.DetailedPurchaseHistoryRepository;
 
@@ -35,7 +35,7 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of this object with the product record.
     @Override
     @Transactional
-    public DetailedPurchaseHistory addDetailPurchase(CartItemRequest utilDetail) {
+    public DetailedPurchaseHistory addDetailPurchase(CartItemRequestDto utilDetail) {
         // Search for a product.
         DetailedPurchaseHistory detail = new DetailedPurchaseHistory();
         Optional<Product> optionalProduct = productRepository.findById(utilDetail.getIdProduct());
@@ -57,11 +57,11 @@ public class DetailedPurchaseHistoryServiceImp implements DetailedPurchaseHistor
     // and the relationship of these objects with each product record.
     @Override
     @Transactional
-    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequest> utilDetails) {
+    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequestDto> utilDetails) {
 
         List<DetailedPurchaseHistory> details = new ArrayList<>();
 
-        for (CartItemRequest util : utilDetails) {
+        for (CartItemRequestDto util : utilDetails) {
 
             // Search for a product.
             DetailedPurchaseHistory detail = new DetailedPurchaseHistory();

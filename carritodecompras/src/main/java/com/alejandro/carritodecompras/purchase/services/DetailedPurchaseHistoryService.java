@@ -3,7 +3,7 @@ package com.alejandro.carritodecompras.purchase.services;
 
 import java.util.List;
 
-import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.models.entities.DetailedPurchaseHistory;
 
 
@@ -15,8 +15,8 @@ public interface DetailedPurchaseHistoryService {
     // Methods for DetailedPurchaseHistory entity
     // -----------------------------
 
-    public DetailedPurchaseHistory addDetailPurchase(CartItemRequest utilDetail);
+    public DetailedPurchaseHistory addDetailPurchase(CartItemRequestDto utilDetail);
 
-    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequest> utilDetails);
+    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequestDto> utilDetails);
 
 }

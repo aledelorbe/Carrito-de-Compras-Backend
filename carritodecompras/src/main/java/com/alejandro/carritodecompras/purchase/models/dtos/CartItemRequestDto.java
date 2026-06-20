@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 // This class is used to create auxiliar objects
 // These objects are received of a shop cart (a purchase) with this structure
-public class CartItemRequest {
+public class CartItemRequestDto {
 
     @NotNull // To obligate to this attribute not to empty
     private Long idProduct;

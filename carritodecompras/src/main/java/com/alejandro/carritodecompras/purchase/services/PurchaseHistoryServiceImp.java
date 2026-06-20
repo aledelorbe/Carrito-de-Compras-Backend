@@ -1,6 +1,7 @@
 package com.alejandro.carritodecompras.purchase.services;
 
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alejandro.carritodecompras.exceptions.NoStockException;
 import com.alejandro.carritodecompras.product.models.entities.Product;
 import com.alejandro.carritodecompras.product.repositories.ProductRepository;
-import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.models.entities.PurchaseHistory;
 import com.alejandro.carritodecompras.purchase.repositories.PurchaseHistoryRepository;
 
@@ -37,21 +39,31 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
     // To save a purchase and the details of this purchase in the db
     @Override
     @Transactional
-    public PurchaseHistory addPurchase(List<CartItemRequest> utilDetails) {
+    public PurchaseHistory addPurchase(List<CartItemRequestDto> cartItemRequestDtos) {
 
         // To set the information of a new purchase
         PurchaseHistory newPurchaseHistory = new PurchaseHistory();
         Double total = 0.0;
         boolean isFirstCicle = true;
 
-        for (CartItemRequest util : utilDetails) {
+        List<CartItemRequestDto> sortedItems = cartItemRequestDtos.stream().sorted(Comparator.comparing(CartItemRequestDto::getIdProduct)).toList();
+        for(CartItemRequestDto cartItem : sortedItems) {
+
+            int rowsAffected = productRepository.decreaseStock(cartItem.getIdProduct(), cartItem.getQuantity());
+
+            if(rowsAffected == 0) {
+                throw new NoStockException();
+            }
+        }
+
+        for (CartItemRequestDto cartItem : cartItemRequestDtos) {
             // Search for a product.
-            Optional<Product> optionalProduct = productRepository.findById(util.getIdProduct());
+            Optional<Product> optionalProduct = productRepository.findById(cartItem.getIdProduct());
 
             // If the product exists then
             if (optionalProduct.isPresent()) {
                 Product productDb = optionalProduct.get();
-                total += productDb.getPrice() * util.getQuantity();
+                total += productDb.getPrice() * cartItem.getQuantity();
 
                 if (isFirstCicle) {
                     // Special action for the first cicle
@@ -61,7 +73,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
             }
         }
         newPurchaseHistory.setTotal(total);
-        newPurchaseHistory.setDetails(detailedRepository.addDetailsPurchase(utilDetails));
+        newPurchaseHistory.setDetails(detailedRepository.addDetailsPurchase(cartItemRequestDtos));
         // the date is set in the 'PurchaseHistory' entity
 
         return repository.save(newPurchaseHistory);

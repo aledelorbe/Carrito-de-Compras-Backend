@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequest;
+import com.alejandro.carritodecompras.purchase.models.dtos.CartItemRequestDto;
 import com.alejandro.carritodecompras.purchase.services.PurchaseService;
 import com.alejandro.carritodecompras.user.models.entities.User;
 import com.alejandro.carritodecompras.user.services.UserService;
@@ -40,31 +40,7 @@ public class PurchaseController {
     private UtilValidation utilValidation;
 
 
-    // ENDPOINTS FOR THE USER ROLE -----------------------------
-
-    // -----------------------------
-    // Methods for purchase entity
-    // -----------------------------
-
-    // To create an endpoint that allows invoking the 'addPurchaseToUser' method.
-    // The annotation called 'RequestBody' allows receiving data of a user
-    @PostMapping("/{userId}/purchase")
-    public ResponseEntity<?> addPurchaseToUser(@Valid @RequestBody List<CartItemRequest> utilDetails, BindingResult result, @PathVariable Long userId) {
-        // To handle the obligations of object attributes
-        if (result.hasFieldErrors()) {
-            return utilValidation.validation(result);
-        }
-
-        // Search for a specific user if it exists then invoke the 'addPurchaseToUser' method.
-        Optional<User> optionalUser = userService.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            User newUser = purchaseService.addPurchaseToUser(optionalUser.get(), utilDetails);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
+    // ENDPOINTS FOR THE ADMIN ROLE -----------------------------
 
     // To create an endpoint that allows invoking the 'getPurchasesByUserId' method.
     // The annotation called 'RequestBody' allows receiving data of a user
@@ -81,6 +57,25 @@ public class PurchaseController {
         return ResponseEntity.notFound().build();
     }
 
+    // ENDPOINTS FOR THE USER ROLE -----------------------------
+
+    // -----------------------------
+    // Methods for purchase entity
+    // -----------------------------
+
+    // To create an endpoint that allows invoking the 'addPurchaseToUser' method.
+    // The annotation called 'RequestBody' allows receiving data of a user
+    @PostMapping("/{userId}/purchase")
+    public ResponseEntity<?> addPurchaseToUser(@Valid @RequestBody List<CartItemRequestDto> cartItemRequestDto, BindingResult result, @PathVariable Long userId) {
+        // To handle the obligations of object attributes
+        if (result.hasFieldErrors()) {
+            return utilValidation.validation(result);
+        }
+
+        User newUser = purchaseService.addPurchaseToUser(userId, cartItemRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    }
+    
     // -----------------------------
     // Methods for detail entity
     // -----------------------------
