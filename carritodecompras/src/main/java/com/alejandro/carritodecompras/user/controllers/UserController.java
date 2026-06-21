@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
 
-@RestController // To create a api rest.
+@RestController // To create an api rest.
 @RequestMapping("/api/users") // To create a base path.
 public class UserController {
 
@@ -76,7 +76,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findTop10ByNameContainingIgnoreCase(name));
     }
 
-    // To create an endpoint that allows invoking the savemethod.
+    // To create an endpoint that allows invoking the save method.
     // The annotation called 'RequestBody' allows receiving data of a user
     @PostMapping()
     public ResponseEntity<?> saveUser(@Valid @RequestBody User user, BindingResult result) {
@@ -90,7 +90,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
-    // To create an endpoint that allows updating all of the values 
+    // To create an endpoint that allows updating all the values
     // of a specific user based its id.
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {

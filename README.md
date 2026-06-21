@@ -70,6 +70,7 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 ## Futuras mejoras
 
 - Mandarle un correo al usuario indicando que su compra fue realizada.
+- Ver si es posible crear un Servicio de cancelar compra.
 - Integrar spring security con jwt para autenticar y autorizar a los usuarios de forma segura.
 
   - Se debe comprobar que, cuando se elimina un usuario, se elimine en cascada toda su información.
@@ -77,7 +78,7 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 - Desarrollar pruebas unitarias
 - Desarrollar pruebas de integracion
 - Dockerizar la app.
-- Agregar redis a los catalogos
+- Agregar redis a los catalogos. Ver si es conveniente porque como el stock de los productos y que el usuario este habilitado o no, tambien cambia, quizas no sea lo mejor.
 - kubernitizar la app.
 - Desplegar el proyecto en AWS.
 - Integrar jenkins

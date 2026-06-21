@@ -15,8 +15,8 @@ public interface DetailedPurchaseHistoryService {
     // Methods for DetailedPurchaseHistory entity
     // -----------------------------
 
-    public DetailedPurchaseHistory addDetailPurchase(CartItemRequestDto utilDetail);
+    DetailedPurchaseHistory addDetailPurchase(CartItemRequestDto utilDetail);
 
-    public List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequestDto> utilDetails);
+    List<DetailedPurchaseHistory> addDetailsPurchase(List<CartItemRequestDto> utilDetails);
 
 }

@@ -1,7 +1,9 @@
 package com.alejandro.carritodecompras.purchase.controllers;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import com.alejandro.carritodecompras.utils.UtilValidation;
 import jakarta.validation.Valid;
 
 
-@RestController // To create a api rest.
+@RestController // To create an api rest.
 @RequestMapping("/api/purchases") // To create a base path.
 public class PurchaseController {
 
@@ -73,12 +75,12 @@ public class PurchaseController {
         }
 
         if (cartItemRequestDto == null || cartItemRequestDto.isEmpty()) {
-            java.util.Map<String, String> errors = new java.util.HashMap<>();
+            Map<String, String> errors = new HashMap<>();
             errors.put("cart", "The cart cannot be null or empty.");
             return ResponseEntity.badRequest().body(errors);
         }
 
-        java.util.Map<String, String> validationErrors = new java.util.HashMap<>();
+        Map<String, String> validationErrors = new HashMap<>();
         for (int i = 0; i < cartItemRequestDto.size(); i++) {
             CartItemRequestDto item = cartItemRequestDto.get(i);
             if (item == null) {

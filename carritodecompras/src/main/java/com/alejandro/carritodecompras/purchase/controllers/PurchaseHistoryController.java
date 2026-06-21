@@ -16,7 +16,7 @@ import com.alejandro.carritodecompras.purchase.services.PurchaseHistoryService;
 import jakarta.validation.constraints.Min;
 
 
-@RestController // To create a api rest.
+@RestController // To create an api rest.
 @RequestMapping("/api/purchases") // To create a base path.
 @Validated // To enable validation for request parameters.
 public class PurchaseHistoryController {

@@ -72,7 +72,7 @@ public class ProductServiceImp implements ProductService {
             productDb.setPrice(product.getPrice());
             productDb.setImage(product.getImage());
 
-            return Optional.ofNullable(repository.save(productDb));
+            return Optional.of(repository.save(productDb));
         }
 
         return optionalProduct;

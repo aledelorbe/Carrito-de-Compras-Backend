@@ -28,7 +28,7 @@ import com.alejandro.carritodecompras.product.services.ProductService;
 import com.alejandro.carritodecompras.utils.UtilValidation;
 
 
-@RestController // To create a api rest.
+@RestController // To create an api rest.
 @RequestMapping("/api/products") // To create a base path.
 @Validated
 public class ProductController {
@@ -84,7 +84,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
     
-    // To create an endpoint that allows update all of atributte values a specific
+    // To create an endpoint that allows update all of attribute values a specific
     // product based its id.
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result,
@@ -125,6 +125,15 @@ public class ProductController {
         @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
     ) {
         return ResponseEntity.ok(productService.findAllProductsByCategory(category, page, size));
+    }
+
+    // To create an endpoint that allows invoking the findAllProductsByBrand method.
+    @GetMapping("/admin/brand/{brand}")
+    public ResponseEntity<?> getProductsByBrand(@PathVariable String brand,
+       @RequestParam(defaultValue = "0") @Min(value = 0, message = "The page number must be greater than or equal to 0") int page,
+       @RequestParam(defaultValue = "5") @Min(value = 5, message = "The page size must be greater than or equal to 5") int size
+    ) {
+        return ResponseEntity.ok(productService.findAllProductsByBrand(brand, page, size));
     }
 
     // To create an endpoint that allows invoking the findTop10ByNameContainingIgnoreCase method.

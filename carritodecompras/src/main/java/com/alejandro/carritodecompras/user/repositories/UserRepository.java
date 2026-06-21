@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT id, name, lastname FROM user", nativeQuery = true)
     Page<UserResponseProjection> getAllUsers(Pageable pageable);
 
-    // To get an specific user based on its id
+    // To get a specific user based on its id
     @Query(value = """
     SELECT
         id_user AS id,

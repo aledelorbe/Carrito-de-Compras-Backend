@@ -947,7 +947,7 @@ components:
       additionalProperties:
         type: string
       example:
-        name: "El campo name debe ser obligatorio"
+        name: "The field name must be obligated"
 
     ErrorMessage:
       type: object

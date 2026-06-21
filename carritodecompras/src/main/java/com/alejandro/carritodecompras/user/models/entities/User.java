@@ -19,8 +19,7 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 
-// To specific the name of the table in mysql
-// In mysql the name of this table is 'user' but in this project 
+// In mysql the name of this table is 'user' but in this project
 // the name of this class is 'User'
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(name = "UK_user", columnNames = { "name", "lastname" }))

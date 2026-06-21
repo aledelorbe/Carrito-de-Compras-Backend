@@ -10,8 +10,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-// To specific the name of the table in mysql
-// In mysql the name of this table is 'product' but in this project 
+// In mysql the name of this table is 'product' but in this project
 // the name of this class is 'Product'
 @Entity
 @Table(name = "product") 

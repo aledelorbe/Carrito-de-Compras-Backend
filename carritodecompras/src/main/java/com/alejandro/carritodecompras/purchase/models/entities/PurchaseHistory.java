@@ -20,8 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
-// To specific the name of the table in mysql
-// In mysql the name of this table is 'purchase_history' but in this project 
+// In mysql the name of this table is 'purchase_history' but in this project
 // the name of this class is 'PurchaseHistory'
 @Entity
 @Table(name = "purchase_history")

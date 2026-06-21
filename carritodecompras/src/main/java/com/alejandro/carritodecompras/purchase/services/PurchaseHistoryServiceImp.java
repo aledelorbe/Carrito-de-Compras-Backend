@@ -51,7 +51,7 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
         // To set the information of a new purchase
         PurchaseHistory newPurchaseHistory = new PurchaseHistory();
         Double total = 0.0;
-        boolean isFirstCicle = true;
+        boolean isFirstCycle = true;
 
         List<CartItemRequestDto> sortedItems = cartItemRequestDtos.stream().sorted(Comparator.comparing(CartItemRequestDto::getIdProduct)).toList();
         for(CartItemRequestDto cartItem : sortedItems) {
@@ -76,10 +76,10 @@ public class PurchaseHistoryServiceImp implements PurchaseHistoryService {
                 Product productDb = optionalProduct.get();
                 total += productDb.getPrice() * cartItem.getQuantity();
 
-                if (isFirstCicle) {
-                    // Special action for the first cicle
+                if (isFirstCycle) {
+                    // Special action for the first cycle
                     newPurchaseHistory.setFirstImage(productDb.getImage());
-                    isFirstCicle = false; // change the state
+                    isFirstCycle = false; // change the state
                 }
             }
         }

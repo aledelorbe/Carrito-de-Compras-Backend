@@ -18,7 +18,7 @@ import com.alejandro.carritodecompras.utils.UtilValidation;
 
 import jakarta.validation.Valid;
 
-@RestController // To create a api rest.
+@RestController // To create an api rest.
 @RequestMapping("/api/details") // To create a base path.
 public class DetailedPurchaseHistoryController {
 
@@ -59,7 +59,7 @@ public class DetailedPurchaseHistoryController {
         }
 
         // When many new details are created to respond return the same many details
-        List<DetailedPurchaseHistory> newDetailedsPurchaseHistory = service.addDetailsPurchase(utilDetails);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newDetailedsPurchaseHistory);
+        List<DetailedPurchaseHistory> newDetailsPurchaseHistory = service.addDetailsPurchase(utilDetails);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newDetailsPurchaseHistory);
     }
 }
